@@ -831,6 +831,8 @@
           <div class="tabs" role="tablist" aria-label="Dataset examples">
             <button class="tab-button" type="button" role="tab" aria-selected="true" aria-controls="example-panel" id="tab-0" data-tab="0">Example 1</button>
             <button class="tab-button" type="button" role="tab" aria-selected="false" aria-controls="example-panel" id="tab-1" data-tab="1">Example 2</button>
+            <button class="tab-button" type="button" role="tab" aria-selected="false" aria-controls="example-panel" id="tab-2" data-tab="2">Example 3</button>
+            <button class="tab-button" type="button" role="tab" aria-selected="false" aria-controls="example-panel" id="tab-3" data-tab="3">Example 4</button>
           </div>
 
           <article class="example-panel" id="example-panel" role="tabpanel" aria-labelledby="tab-0">
@@ -978,7 +980,7 @@
     <section class="section" id="dataset" aria-label="Benchmark highlights">
       <div class="section-inner">
         <p class="highlight-intro">
-          Inspired by BrowseComp, HyperBrowseComp turns the difficulty up. Its prompts are broader across languages, modalities, and task formats, moving beyond trivia-like clue intersections toward searches that require models to navigate videos, maps, documents, records, and other hard-to-reach web resources.
+          Inspired by BrowseComp, HyperBrowseComp turns the difficulty up. Its prompts are broader across languages, modalities, and task formats, moving beyond trivia-like clue intersections toward searches that require models to navigate videos, maps, documents, records, and other hard-to-reach web resources. Every example is meticulously hand-crafted and validated.
         </p>
 
         <div class="highlight-grid">
@@ -1102,6 +1104,62 @@
             label: "Extract from the image",
             text: "Use OCR or visual reading on the lot image, then take the top character of each main-text column in traditional order.",
             image: "assets/hyperbrowsecomp/zh-example-4.webp"
+          }
+        ]
+      },
+      {
+        language: {
+          code: "id",
+          label: "Indonesian"
+        },
+        question: {
+          original: "Identifikasi acara wisuda universitas di mana sambutan rektornya menyebutkan 17 akreditasi AQAS, 47 mahasiswa mengikuti IISMA, dan kemampuan AI mempelajari Wikipedia dalam hitungan hari. Di wisuda yang sama, ada 1 mahasiswa yang dipanggil yang kemudian mempublikasikan 1 paper di NAACL 2024 dan 1 ACL 2026 Findings. Setelah mahasiswa tersebut, ada berapa total mahasiswa dengan gelar 'S.T.' yang dipanggil?",
+          translation: "Identify the Indonesian university graduation ceremony where the Rector's opening speech mentions 17 AQAS accreditations, 47 students selected for IISMA, and AI's ability to learn Wikipedia in days. Later in the ceremony, there is exactly 1 student called who later published 1 paper at NAACL 2024 and 1 at ACL 2026 Findings. After him, how many total students with the title 'S.T.' are called?"
+        },
+        answer: "14",
+        route: [
+          {
+            icon: "video",
+            label: "Locate the graduation video",
+            text: "Find the ceremony video whose rector's opening speech contains the three anchor details."
+          },
+          {
+            icon: "search",
+            label: "Identify the target student and timestamp",
+            text: "Match the called student to the later NAACL 2024 and ACL 2026 Findings publications, then locate when he is called."
+          },
+          {
+            icon: "scan",
+            label: "Count the remaining S.T. graduates",
+            text: "Continue from that point and count all subsequent students called with the S.T. title."
+          }
+        ]
+      },
+      {
+        language: {
+          code: "ko",
+          label: "Korean"
+        },
+        question: {
+          original: "태아가 아직 자궁 안에 있을 때 아기의 성별을 바꾸는 방법을 포함하고 있으며, 2013년에 영어로 번역된 의학 문헌을 찾으십시오. 대학 교수가 번역한 판본을 사용하십시오. 이 판본은 3쪽의 큰 빨간 도장, 92쪽 위쪽에 붙은 “1962” 스티커, 19쪽의 인체 해부도 그림으로 식별할 수 있습니다. 그 특정 판본에서 20쪽의 첫 번째로 인쇄된 줄을 유니코드로 적으시오. 줄바꿈은 제외하되, 공백과 문장부호는 인쇄된 그대로 포함하십시오.",
+          translation: "Find the medical text, translated into English in 2013, that includes a method for changing the gender of a baby while it is still in the mother's womb. Use the version modernized by a university professor. This version can be identified by a large red stamp on page 3, a sticker with the number “1962” written across the top on page 92, and a human anatomy diagram on page 19. In that specific version, write the first printed line of page 20 in Unicode. Exclude the line break, but preserve spaces and punctuation exactly as printed."
+        },
+        answer: "손진인이왈천리간의사람이귀중하니머리둥굴함은",
+        route: [
+          {
+            icon: "search",
+            label: "Identify the medical text",
+            text: "Use the content clue and 2013 English translation detail to determine the source text."
+          },
+          {
+            icon: "archive",
+            label: "Find the correct version",
+            text: "Match the version using the red stamp, 1962 sticker, and anatomy diagram page markers."
+          },
+          {
+            icon: "scan",
+            label: "Extract the first line",
+            text: "Read page 20 of that version and transcribe the first printed line exactly in Unicode."
           }
         ]
       }
