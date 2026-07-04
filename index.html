@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>HyperBrowseComp</title>
+  <title>Hyper-BrowseComp</title>
   <style>
     :root {
       --bg: #f8f7f5;
@@ -110,7 +110,7 @@
     h1 {
       margin: 0;
       max-width: 1020px;
-      font-size: clamp(58px, 10vw, 132px);
+      font-size: clamp(48px, 7.8vw, 104px);
       line-height: 0.93;
       font-weight: 650;
       letter-spacing: 0;
@@ -122,6 +122,14 @@
       color: #383031;
       font-size: clamp(19px, 2.2vw, 27px);
       line-height: 1.26;
+    }
+
+    .release-note {
+      margin: 20px 0 0;
+      color: var(--red);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0;
     }
 
     .section {
@@ -492,29 +500,30 @@
 
     .results-layout {
       display: grid;
-      gap: 10px;
+      gap: 0;
       border-top: 1px solid var(--line-strong);
-      padding-top: 18px;
     }
 
     .comparison-header,
     .comparison-row {
       display: grid;
-      grid-template-columns: minmax(140px, 0.85fr) minmax(320px, 2.2fr) minmax(150px, 0.9fr);
-      gap: 22px;
+      grid-template-columns: minmax(180px, 1fr) minmax(260px, 2fr) minmax(160px, 0.8fr);
+      gap: 24px;
       align-items: center;
     }
 
     .comparison-header {
       color: var(--muted);
-      font-size: 13px;
+      font-size: 12px;
       text-transform: uppercase;
+      padding: 14px 0 10px;
+      border-bottom: 1px solid var(--line);
     }
 
     .comparison-row {
-      min-height: 112px;
+      min-height: 68px;
       border-bottom: 1px solid var(--line);
-      padding: 16px 0;
+      padding: 18px 0;
     }
 
     .model-name {
@@ -523,63 +532,26 @@
     }
 
     .bar-track {
-      height: 14px;
-      border: 1px solid var(--line-strong);
-      background: rgba(255, 250, 248, 0.88);
+      height: 10px;
+      background: #ece3df;
       position: relative;
       overflow: hidden;
+      border-radius: 999px;
     }
 
     .bar-fill {
       display: block;
       height: 100%;
       width: var(--bar-width, 0%);
-      background: linear-gradient(90deg, var(--teal), #d9482b);
-    }
-
-    .bar-fill.tool {
-      background: linear-gradient(90deg, #3b0b13, #a7283a);
-    }
-
-    .bar-fill.pending {
-      width: 18%;
-      background: repeating-linear-gradient(
-        135deg,
-        #f0c9cd,
-        #f0c9cd 8px,
-        #f7f1ee 8px,
-        #f7f1ee 16px
-      );
+      background: var(--teal);
+      border-radius: inherit;
     }
 
     .chart-cell {
       display: grid;
-      gap: 9px;
-    }
-
-    .chart-bar {
-      display: grid;
-      grid-template-columns: 92px minmax(0, 1fr) 48px;
-      gap: 12px;
+      grid-template-columns: minmax(0, 1fr) 58px;
+      gap: 14px;
       align-items: center;
-    }
-
-    .chart-label {
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .chart-axis {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      color: var(--muted);
-      font-size: 11px;
-      padding-left: 104px;
-      line-height: 1;
-    }
-
-    .chart-axis span:not(:first-child) {
-      text-align: right;
     }
 
     .score-value,
@@ -590,10 +562,16 @@
     }
 
     .cost-cell {
-      display: grid;
-      gap: 5px;
       color: var(--muted);
       font-size: 14px;
+      text-align: right;
+    }
+
+    .results-note {
+      margin: 16px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
     }
 
     .highlight-grid {
@@ -768,9 +746,13 @@
 
       .comparison-row {
         grid-template-columns: 1fr;
-        gap: 10px;
+        gap: 8px;
         border-bottom: 1px solid var(--line);
         padding-bottom: 12px;
+      }
+
+      .chart-cell {
+        grid-template-columns: minmax(0, 1fr) 54px;
       }
 
       .cost-cell::before {
@@ -779,16 +761,14 @@
         text-transform: uppercase;
       }
 
-      .chart-bar {
-        grid-template-columns: 72px minmax(0, 1fr) 48px;
-      }
-
-      .chart-axis {
-        padding-left: 84px;
-      }
-
       .cost-cell::before {
         content: "Average cost";
+      }
+
+      .cost-cell {
+        display: flex;
+        justify-content: space-between;
+        text-align: left;
       }
 
     }
@@ -799,12 +779,12 @@
     <nav class="nav" aria-label="Primary">
       <div class="brand">
         <span class="brand-mark" aria-hidden="true">H</span>
-        <span>HyperBrowseComp</span>
+        <span>Hyper-BrowseComp</span>
       </div>
       <div class="nav-links">
         <a href="#examples">Examples</a>
-        <a href="#results">Results</a>
         <a href="#dataset">Dataset</a>
+        <a href="#results">Results</a>
       </div>
     </nav>
   </header>
@@ -813,10 +793,11 @@
     <section class="hero" aria-labelledby="page-title">
       <div class="hero-grid">
         <div>
-          <h1 id="page-title">HyperBrowseComp</h1>
+          <h1 id="page-title">Hyper-BrowseComp</h1>
           <p class="hero-copy">
-            A multilingual, multimodal browsing benchmark for agents facing hard searches and questions beyond memorized web knowledge.
+            A multilingual, multimodal stress test for browsing agents.
           </p>
+          <p class="release-note">On-going project. Full release soon.</p>
         </div>
       </div>
     </section>
@@ -829,10 +810,10 @@
 
         <div class="examples-shell">
           <div class="tabs" role="tablist" aria-label="Dataset examples">
-            <button class="tab-button" type="button" role="tab" aria-selected="true" aria-controls="example-panel" id="tab-0" data-tab="0">Example 1</button>
-            <button class="tab-button" type="button" role="tab" aria-selected="false" aria-controls="example-panel" id="tab-1" data-tab="1">Example 2</button>
-            <button class="tab-button" type="button" role="tab" aria-selected="false" aria-controls="example-panel" id="tab-2" data-tab="2">Example 3</button>
-            <button class="tab-button" type="button" role="tab" aria-selected="false" aria-controls="example-panel" id="tab-3" data-tab="3">Example 4</button>
+            <button class="tab-button" type="button" role="tab" aria-selected="true" aria-controls="example-panel" id="tab-0" data-tab="0">DE Example</button>
+            <button class="tab-button" type="button" role="tab" aria-selected="false" aria-controls="example-panel" id="tab-1" data-tab="1">ZH Example</button>
+            <button class="tab-button" type="button" role="tab" aria-selected="false" aria-controls="example-panel" id="tab-2" data-tab="2">ID Example</button>
+            <button class="tab-button" type="button" role="tab" aria-selected="false" aria-controls="example-panel" id="tab-3" data-tab="3">KO Example</button>
           </div>
 
           <article class="example-panel" id="example-panel" role="tabpanel" aria-labelledby="tab-0">
@@ -869,6 +850,52 @@
       </div>
     </section>
 
+    <section class="section" id="dataset" aria-label="Benchmark highlights">
+      <div class="section-inner">
+        <p class="highlight-intro">
+          Inspired by BrowseComp, Hyper-BrowseComp turns the difficulty up. Its prompts are broader across languages, modalities, and task formats, moving beyond trivia-like clue intersections toward searches that require models to navigate videos, maps, documents, and records. Every example is meticulously hand-crafted and validated.
+        </p>
+
+        <div class="highlight-grid">
+          <div class="highlight-item">
+            <h3>Multilingual</h3>
+            <div class="highlight-copy">
+              <p>Unlike English-centric browsing benchmarks, Hyper-BrowseComp asks questions in many source languages and often requires models to work across multilingual text, audio, and video before they can settle on an answer. Current coverage includes the languages below, with more to be added.</p>
+              <ul class="coverage-legend" aria-label="Current language coverage">
+                <li>Chinese</li>
+                <li>Egyptian Arabic</li>
+                <li>German</li>
+                <li>Indonesian</li>
+                <li>Javanese</li>
+                <li>Kazakh</li>
+                <li>Korean</li>
+                <li>Russian</li>
+                <li>Spanish</li>
+                <li>Tamil</li>
+                <li>Thai</li>
+                <li>Uzbek</li>
+                <li>Vietnamese</li>
+              </ul>
+            </div>
+          </div>
+          <div class="highlight-item">
+            <h3>Elevated difficulty</h3>
+            <div class="highlight-copy">
+              <p>We are strongly inspired by BrowseComp, but Hyper-BrowseComp pushes beyond trivia-like intersections of vague descriptions. Many tasks require locating specific information inside books, PDFs, papers, videos, official tables, maps, and other sources that are unlikely to be stored directly in model weights.</p>
+              <p>Each task still has a compact answer, but reaching it can require identifying entities, disambiguating records, calculating from data, or aggregating many small clues. The benchmark rewards careful search strategy, source selection, and final-answer verification.</p>
+            </div>
+          </div>
+          <div class="highlight-item">
+            <h3>Multimodal web navigation</h3>
+            <div class="highlight-copy">
+              <p>Beyond plain text search, Hyper-BrowseComp can require models to interpret or aggregate information from images, audio, video, maps, and interactive websites. A solver may need to combine a video frame, a public record, a map position, and a current storefront before the answer becomes clear.</p>
+              <p>This makes the benchmark closer to real browsing work: the relevant evidence is often distributed across modalities, interfaces, and languages, and the model must decide which tool or source is worth consulting next.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="section" id="results" aria-labelledby="results-title">
       <div class="section-inner">
         <div class="section-heading">
@@ -878,156 +905,43 @@
         <div class="results-layout" aria-label="Current model comparison">
           <div class="comparison-header" aria-hidden="true">
             <span>Model</span>
-            <span>Accuracy by mode</span>
+            <span>Accuracy</span>
             <span>Average cost</span>
           </div>
 
           <div class="comparison-row">
-            <span class="model-name">GPT 5.5</span>
-            <div class="chart-cell">
-              <div class="chart-bar no-tool-score">
-                <span class="chart-label">No tools</span>
-                <span class="bar-track"><span class="bar-fill pending"></span></span>
-                <span class="score-value">TBD</span>
-              </div>
-              <div class="chart-bar tool-score">
-                <span class="chart-label">Tools</span>
-                <span class="bar-track"><span class="bar-fill pending tool"></span></span>
-                <span class="score-value">TBD</span>
-              </div>
-              <div class="chart-axis" aria-hidden="true">
-                <span>0</span><span>25</span><span>50</span><span>75</span><span>100</span>
-              </div>
+            <span class="model-name">Qwen 3.7 Max</span>
+            <div class="chart-cell" aria-label="14.3% accuracy">
+              <span class="bar-track"><span class="bar-fill" style="--bar-width: 14.3%;"></span></span>
+              <span class="score-value">14.3%</span>
             </div>
             <span class="cost-cell">
-              <span><span class="cost-value">TBD</span> avg time</span>
-              <span><span class="cost-value">TBD</span> avg tokens</span>
+              <span><span class="cost-value">$5.20</span> per problem</span>
             </span>
           </div>
 
           <div class="comparison-row">
-            <span class="model-name">Claude 4.7</span>
-            <div class="chart-cell">
-              <div class="chart-bar no-tool-score">
-                <span class="chart-label">No tools</span>
-                <span class="bar-track"><span class="bar-fill pending"></span></span>
-                <span class="score-value">TBD</span>
-              </div>
-              <div class="chart-bar tool-score">
-                <span class="chart-label">Tools</span>
-                <span class="bar-track"><span class="bar-fill pending tool"></span></span>
-                <span class="score-value">TBD</span>
-              </div>
-              <div class="chart-axis" aria-hidden="true">
-                <span>0</span><span>25</span><span>50</span><span>75</span><span>100</span>
-              </div>
+            <span class="model-name">GLM 5.2</span>
+            <div class="chart-cell" aria-label="15.0% accuracy">
+              <span class="bar-track"><span class="bar-fill" style="--bar-width: 15%;"></span></span>
+              <span class="score-value">15.0%</span>
             </div>
             <span class="cost-cell">
-              <span><span class="cost-value">TBD</span> avg time</span>
-              <span><span class="cost-value">TBD</span> avg tokens</span>
-            </span>
-          </div>
-
-          <div class="comparison-row">
-            <span class="model-name">Gemini Pro 3.1</span>
-            <div class="chart-cell">
-              <div class="chart-bar no-tool-score">
-                <span class="chart-label">No tools</span>
-                <span class="bar-track"><span class="bar-fill pending"></span></span>
-                <span class="score-value">TBD</span>
-              </div>
-              <div class="chart-bar tool-score">
-                <span class="chart-label">Tools</span>
-                <span class="bar-track"><span class="bar-fill pending tool"></span></span>
-                <span class="score-value">TBD</span>
-              </div>
-              <div class="chart-axis" aria-hidden="true">
-                <span>0</span><span>25</span><span>50</span><span>75</span><span>100</span>
-              </div>
-            </div>
-            <span class="cost-cell">
-              <span><span class="cost-value">TBD</span> avg time</span>
-              <span><span class="cost-value">TBD</span> avg tokens</span>
-            </span>
-          </div>
-
-          <div class="comparison-row">
-            <span class="model-name">Qwen 3.6</span>
-            <div class="chart-cell">
-              <div class="chart-bar no-tool-score">
-                <span class="chart-label">No tools</span>
-                <span class="bar-track"><span class="bar-fill pending"></span></span>
-                <span class="score-value">TBD</span>
-              </div>
-              <div class="chart-bar tool-score">
-                <span class="chart-label">Tools</span>
-                <span class="bar-track"><span class="bar-fill pending tool"></span></span>
-                <span class="score-value">TBD</span>
-              </div>
-              <div class="chart-axis" aria-hidden="true">
-                <span>0</span><span>25</span><span>50</span><span>75</span><span>100</span>
-              </div>
-            </div>
-            <span class="cost-cell">
-              <span><span class="cost-value">TBD</span> avg time</span>
-              <span><span class="cost-value">TBD</span> avg tokens</span>
+              <span><span class="cost-value">$4.10</span> per problem</span>
             </span>
           </div>
         </div>
-      </div>
-    </section>
 
-    <section class="section" id="dataset" aria-label="Benchmark highlights">
-      <div class="section-inner">
-        <p class="highlight-intro">
-          Inspired by BrowseComp, HyperBrowseComp turns the difficulty up. Its prompts are broader across languages, modalities, and task formats, moving beyond trivia-like clue intersections toward searches that require models to navigate videos, maps, documents, records, and other hard-to-reach web resources. Every example is meticulously hand-crafted and validated.
+        <p class="results-note">
+          More model results are coming soon. Current numbers are measured on a subset of the benchmark while the dataset continues to grow.
         </p>
-
-        <div class="highlight-grid">
-          <div class="highlight-item">
-            <h3>Multilingual</h3>
-            <div class="highlight-copy">
-              <p>Unlike English-centric browsing benchmarks, HyperBrowseComp asks questions in many source languages and often requires models to work across multilingual text, audio, and video before they can settle on an answer. Current coverage includes the languages below, with more to be added.</p>
-              <ul class="coverage-legend" aria-label="Current language coverage">
-                <li>Indonesian</li>
-                <li>Javanese</li>
-                <li>German</li>
-                <li>Spanish</li>
-                <li>Vietnamese</li>
-                <li>Russian</li>
-                <li>Kazakh</li>
-                <li>Uzbek</li>
-                <li>Chinese</li>
-                <li>Thai</li>
-                <li>Tamil</li>
-                <li>Egyptian Arabic</li>
-                <li>Korean</li>
-              </ul>
-            </div>
-          </div>
-          <div class="highlight-item">
-            <h3>Elevated difficulty</h3>
-            <div class="highlight-copy">
-              <p>We are strongly inspired by BrowseComp, but HyperBrowseComp pushes beyond trivia-like intersections of vague descriptions. Many tasks require locating specific information inside books, PDFs, papers, videos, official tables, maps, and other sources that are unlikely to be stored directly in model weights.</p>
-              <p>Each task still has a compact answer, but reaching it can require identifying entities, disambiguating records, calculating from data, or aggregating many small clues. The benchmark rewards careful search strategy, source selection, and final-answer verification.</p>
-            </div>
-          </div>
-          <div class="highlight-item">
-            <h3>Multimodal web navigation</h3>
-            <div class="highlight-copy">
-              <p>Beyond plain text search, HyperBrowseComp can require models to interpret or aggregate information from images, audio, video, maps, and interactive websites. A solver may need to combine a video frame, a public record, a map position, and a current storefront before the answer becomes clear.</p>
-              <p>This makes the benchmark closer to real browsing work: the relevant evidence is often distributed across modalities, interfaces, and languages, and the model must decide which tool or source is worth consulting next.</p>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   </main>
 
   <footer class="footer">
     <div class="footer-inner">
-      <span>HyperBrowseComp</span>
-      <span>Static preview / 2026</span>
+      <span>Hyper-BrowseComp</span>
     </div>
   </footer>
 
@@ -1121,17 +1035,20 @@
           {
             icon: "video",
             label: "Locate the graduation video",
-            text: "Find the ceremony video whose rector's opening speech contains the three anchor details."
+            text: "Find the ceremony video whose rector's opening speech contains the three anchor details.",
+            image: "assets/hyperbrowsecomp/id-example-1.webp"
           },
           {
             icon: "search",
             label: "Identify the target student and timestamp",
-            text: "Match the called student to the later NAACL 2024 and ACL 2026 Findings publications, then locate when he is called."
+            text: "Match the called student to the later NAACL 2024 and ACL 2026 Findings publications, then locate when he is called.",
+            image: "assets/hyperbrowsecomp/id-example-2.webp"
           },
           {
             icon: "scan",
             label: "Count the remaining S.T. graduates",
-            text: "Continue from that point and count all subsequent students called with the S.T. title."
+            text: "Continue from that point and count all subsequent students called with the S.T. title.",
+            image: "assets/hyperbrowsecomp/id-example-3.webp"
           }
         ]
       },
@@ -1149,17 +1066,20 @@
           {
             icon: "search",
             label: "Identify the medical text",
-            text: "Use the content clue and 2013 English translation detail to determine the source text."
+            text: "Use the content clue and 2013 English translation detail to determine the source text.",
+            image: "assets/hyperbrowsecomp/ko-example-1.webp"
           },
           {
             icon: "archive",
             label: "Find the correct version",
-            text: "Match the version using the red stamp, 1962 sticker, and anatomy diagram page markers."
+            text: "Match the version using the red stamp, 1962 sticker, and anatomy diagram page markers.",
+            image: "assets/hyperbrowsecomp/ko-example-2.webp"
           },
           {
             icon: "scan",
             label: "Extract the first line",
-            text: "Read page 20 of that version and transcribe the first printed line exactly in Unicode."
+            text: "Read page 20 of that version and transcribe the first printed line exactly in Unicode.",
+            image: "assets/hyperbrowsecomp/ko-example-3.webp"
           }
         ]
       }
