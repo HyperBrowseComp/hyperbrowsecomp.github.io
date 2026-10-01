@@ -1,15 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" role="img" aria-label="HyperBrowseComp browser and globe mark">
-  <rect width="80" height="80" rx="15" fill="#2b3745"/>
-  <rect x="10" y="12" width="60" height="56" rx="7" fill="none" stroke="#e6edf1" stroke-width="2"/>
-  <path d="M10 25h60" fill="none" stroke="#8494a3" stroke-width="1.5"/>
-  <circle cx="18" cy="19" r="1.5" fill="#d47a61"/>
-  <circle cx="24" cy="19" r="1.5" fill="#8494a3"/>
-  <circle cx="30" cy="19" r="1.5" fill="#8494a3"/>
-  <circle cx="40" cy="46" r="15" fill="none" stroke="#e6edf1" stroke-width="1.9"/>
-  <path d="M25 46h30M40 31c-5 5-7 10-7 15s2 10 7 15M40 31c5 5 7 10 7 15s-2 10-7 15" fill="none" stroke="#8494a3" stroke-width="1.4"/>
-  <path d="m26 52 10-7 7 3 11-9" fill="none" stroke="#d47a61" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="26" cy="52" r="2.3" fill="#d47a61"/>
-  <circle cx="36" cy="45" r="2.3" fill="#d47a61"/>
-  <circle cx="43" cy="48" r="2.3" fill="#d47a61"/>
-  <circle cx="54" cy="39" r="2.3" fill="#d47a61"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" role="img" aria-label="HyperBrowseComp search and globe mark">
+  <circle cx="34" cy="34" r="24" fill="#283848" stroke="#e6edf1" stroke-width="2.5"/>
+  <path d="M11 34h46M34 10c-7 7-10 15-10 24s3 17 10 24M34 10c7 7 10 15 10 24s-3 17-10 24" fill="none" stroke="#8fa3b2" stroke-width="1.5"/>
+  <path d="m19 42 10-8 9 5 11-13" fill="none" stroke="#e18b70" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="19" cy="42" r="2.5" fill="#e18b70"/>
+  <circle cx="29" cy="34" r="2.5" fill="#e18b70"/>
+  <circle cx="38" cy="39" r="2.5" fill="#e18b70"/>
+  <circle cx="49" cy="26" r="2.5" fill="#e18b70"/>
+  <path d="m52 52 19 19" fill="none" stroke="#e18b70" stroke-width="6" stroke-linecap="round"/>
 </svg>
