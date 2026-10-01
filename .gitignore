@@ -1,0 +1,5 @@
+assets/Hyper_BrowseComp.pdf
+assets/figures/
+__pycache__/
+*.pyc
+.DS_Store

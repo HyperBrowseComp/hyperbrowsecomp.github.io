@@ -1,1338 +1,166 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Hyper-BrowseComp</title>
-  <style>
-    :root {
-      --bg: #f8f7f5;
-      --paper: #ffffff;
-      --ink: #171214;
-      --muted: #696061;
-      --line: #ded8d5;
-      --line-strong: #c7bab7;
-      --teal: #b51228;
-      --red: #7a0e1c;
-      --plum: #261216;
-      --gold: #c65321;
-      --green: #8b2531;
-      --shadow: 0 18px 42px rgba(43, 18, 20, 0.1);
-      --max: 1280px;
-      --page-gutter: clamp(24px, 5vw, 72px);
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-      -webkit-text-size-adjust: 100%;
-      text-size-adjust: 100%;
-    }
-
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--ink);
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      line-height: 1.55;
-      letter-spacing: 0;
-      overflow-x: hidden;
-    }
-
-    a {
-      color: inherit;
-      text-decoration-color: rgba(181, 18, 40, 0.4);
-      text-underline-offset: 0.18em;
-    }
-
-    button {
-      font: inherit;
-    }
-
-    .site-header {
-      border-bottom: 1px solid var(--line);
-      background: rgba(248, 247, 245, 0.92);
-      backdrop-filter: blur(16px);
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-
-    .nav {
-      width: 100%;
-      max-width: calc(var(--max) + var(--page-gutter) + var(--page-gutter));
-      min-height: 62px;
-      margin: 0 auto;
-      padding: 0 var(--page-gutter);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 24px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-weight: 700;
-    }
-
-    .brand-mark {
-      width: 30px;
-      height: 30px;
-      display: grid;
-      place-items: center;
-      border: 1px solid var(--ink);
-      border-radius: 50%;
-      font-size: 14px;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 22px;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    main {
-      overflow: hidden;
-    }
-
-    .hero {
-      width: 100%;
-      max-width: calc(var(--max) + var(--page-gutter) + var(--page-gutter));
-      margin: 0 auto;
-      padding: 72px var(--page-gutter) 54px;
-    }
-
-    .hero-grid {
-      max-width: 1040px;
-    }
-
-    h1 {
-      margin: 0;
-      max-width: 1020px;
-      font-size: clamp(48px, 7.8vw, 104px);
-      line-height: 0.93;
-      font-weight: 650;
-      letter-spacing: 0;
-      overflow-wrap: anywhere;
-    }
-
-    .hero-copy {
-      max-width: 840px;
-      margin: 26px 0 0;
-      color: #383031;
-      font-size: clamp(19px, 2.2vw, 27px);
-      line-height: 1.26;
-      overflow-wrap: anywhere;
-    }
-
-    .release-note {
-      margin: 20px 0 0;
-      color: var(--red);
-      font-size: 14px;
-      font-weight: 700;
-      letter-spacing: 0;
-    }
-
-    .section {
-      border-top: 1px solid var(--line);
-      padding: 70px 0;
-    }
-
-    .section-inner {
-      width: 100%;
-      max-width: calc(var(--max) + var(--page-gutter) + var(--page-gutter));
-      margin: 0 auto;
-      padding: 0 var(--page-gutter);
-    }
-
-    .section-heading {
-      margin-bottom: 24px;
-    }
-
-    .section-heading h2 {
-      margin: 0;
-      font-size: clamp(28px, 3.4vw, 46px);
-      line-height: 1.05;
-      font-weight: 620;
-      letter-spacing: 0;
-    }
-
-    .tabs {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding-bottom: 12px;
-      border-bottom: 1px solid var(--line-strong);
-      scrollbar-width: thin;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .tab-button {
-      min-width: 144px;
-      min-height: 42px;
-      border: 1px solid var(--line-strong);
-      background: transparent;
-      color: var(--muted);
-      border-radius: 999px;
-      padding: 8px 16px;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
-    }
-
-    .tab-button:hover,
-    .tab-button:focus-visible {
-      color: var(--ink);
-      border-color: var(--ink);
-      outline: none;
-    }
-
-    .tab-button[aria-selected="true"] {
-      background: var(--teal);
-      border-color: var(--teal);
-      color: var(--paper);
-    }
-
-    .examples-shell {
-      border: 1px solid var(--line-strong);
-      border-radius: 8px;
-      background: var(--paper);
-      padding: 16px;
-      box-shadow: var(--shadow);
-    }
-
-    .example-panel {
-      min-height: 520px;
-      display: grid;
-      grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
-      gap: 34px;
-      padding: 28px 20px 20px;
-      background: var(--paper);
-      border: 1px solid var(--line-strong);
-      border-top: 0;
-    }
-
-    .qa-stack {
-      display: grid;
-      gap: 20px;
-    }
-
-    .question-block,
-    .answer-block,
-    .route-block {
-      border-top: 1px solid var(--line-strong);
-      padding-top: 18px;
-    }
-
-    .block-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 12px;
-    }
-
-    .label {
-      margin: 0;
-      color: var(--muted);
-      font-size: 13px;
-      text-transform: uppercase;
-    }
-
-    .answer-block .label,
-    .route-block .label {
-      margin-bottom: 14px;
-    }
-
-    .language-toggle {
-      display: inline-grid;
-      grid-template-columns: 1fr 1fr;
-      border: 1px solid var(--line-strong);
-      border-radius: 999px;
-      overflow: hidden;
-      background: rgba(255, 255, 255, 0.75);
-    }
-
-    .language-toggle button {
-      min-width: 82px;
-      min-height: 30px;
-      border: 0;
-      background: transparent;
-      color: var(--muted);
-      cursor: pointer;
-      font-size: 12px;
-      padding: 4px 10px;
-    }
-
-    .language-toggle button:hover,
-    .language-toggle button:focus-visible {
-      color: var(--ink);
-      outline: none;
-    }
-
-    .language-toggle button[aria-pressed="true"] {
-      background: var(--teal);
-      color: var(--paper);
-    }
-
-    .language-note {
-      margin: 0;
-      border-left: 3px solid var(--teal);
-      background: #f7f1ee;
-      color: #4c2a2f;
-      padding: 9px 11px;
-      font-size: 13px;
-      line-height: 1.35;
-      overflow-wrap: anywhere;
-    }
-
-    .question-text {
-      margin: 0;
-      color: #211a1b;
-      font-size: clamp(16px, 1.55vw, 21px);
-      line-height: 1.42;
-      overflow-wrap: anywhere;
-    }
-
-    .answer-text {
-      margin: 0;
-      color: var(--ink);
-      font-size: clamp(18px, 1.8vw, 24px);
-      line-height: 1.32;
-      font-weight: 620;
-      letter-spacing: 0;
-      overflow-wrap: anywhere;
-    }
-
-    .route-list {
-      display: grid;
-      gap: 6px;
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
-
-    .route-list li {
-      display: grid;
-      grid-template-columns: 32px minmax(0, 1fr);
-      gap: 10px;
-      align-items: center;
-      min-height: 43px;
-      border: 1px solid rgba(199, 186, 183, 0.9);
-      background: rgba(255, 255, 255, 0.9);
-      padding: 6px 9px;
-      color: #2f2627;
-      cursor: pointer;
-      transition: background 150ms ease, border-color 150ms ease;
-    }
-
-    .route-list li:hover,
-    .route-list li:focus-visible,
-    .route-list li.is-active {
-      background: #f7f1ee;
-      border-color: var(--teal);
-      outline: none;
-    }
-
-    .route-icon {
-      width: 30px;
-      height: 30px;
-      display: grid;
-      place-items: center;
-      border: 1px solid rgba(29, 11, 16, 0.16);
-      border-radius: 50%;
-      color: var(--paper);
-      background: var(--teal);
-    }
-
-    .route-list li:nth-child(2) .route-icon {
-      background: var(--red);
-    }
-
-    .route-list li:nth-child(3) .route-icon {
-      background: var(--plum);
-    }
-
-    .route-list li:nth-child(4) .route-icon {
-      background: var(--gold);
-    }
-
-    .route-list li:nth-child(5) .route-icon {
-      background: var(--green);
-    }
-
-    .route-icon svg {
-      width: 15px;
-      height: 15px;
-      stroke-width: 2;
-    }
-
-    .route-copy {
-      display: block;
-    }
-
-    .route-copy strong {
-      font-size: 12.5px;
-      line-height: 1.25;
-      color: var(--ink);
-      overflow-wrap: anywhere;
-    }
-
-    .route-preview {
-      min-height: 270px;
-      aspect-ratio: 16 / 9;
-      position: relative;
-      display: grid;
-      place-items: center;
-      overflow: hidden;
-      margin-top: 14px;
-      border: 1px dashed var(--line-strong);
-      background: #f7f3f1;
-    }
-
-    .route-preview::before,
-    .route-preview::after {
-      content: "";
-      position: absolute;
-      pointer-events: none;
-    }
-
-    .route-preview::before {
-      inset: 26px 32px;
-      border: 1px solid rgba(181, 18, 40, 0.18);
-      background: linear-gradient(135deg, rgba(181, 18, 40, 0.1), rgba(255, 255, 255, 0.88));
-    }
-
-    .route-preview::after {
-      width: 70%;
-      height: 1px;
-      left: 15%;
-      top: 50%;
-      background: rgba(181, 18, 40, 0.28);
-      transform: rotate(-10deg);
-    }
-
-    .route-preview-icon {
-      width: 54px;
-      height: 54px;
-      display: grid;
-      place-items: center;
-      border-radius: 50%;
-      background: var(--teal);
-      color: var(--paper);
-      position: relative;
-      z-index: 1;
-      box-shadow: 0 12px 24px rgba(181, 18, 40, 0.2);
-    }
-
-    .route-preview-image {
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-      display: none;
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      background: var(--paper);
-    }
-
-    .route-preview.has-image {
-      border-style: solid;
-      background: var(--paper);
-    }
-
-    .route-preview.has-image::before,
-    .route-preview.has-image::after {
-      display: none;
-    }
-
-    .route-preview.has-image .route-preview-image {
-      display: block;
-    }
-
-    .route-preview.has-image .route-preview-icon {
-      display: none;
-    }
-
-    .route-preview-icon svg {
-      width: 25px;
-      height: 25px;
-      stroke-width: 2;
-    }
-
-    .route-preview[data-kind="video"]::before {
-      inset: 34px 30px;
-      border-radius: 6px;
-      background:
-        linear-gradient(90deg, rgba(29, 11, 16, 0.1) 0 22%, transparent 22% 100%),
-        linear-gradient(135deg, rgba(181, 18, 40, 0.16), rgba(255, 255, 255, 0.92));
-    }
-
-    .route-preview[data-kind="pin"] {
-      background:
-        linear-gradient(90deg, transparent 0 45%, rgba(181, 18, 40, 0.1) 45% 55%, transparent 55% 100%),
-        #f7f3f1;
-    }
-
-    .route-preview[data-kind="map"] {
-      background:
-        linear-gradient(rgba(181, 18, 40, 0.08) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(181, 18, 40, 0.08) 1px, transparent 1px),
-        #f7f3f1;
-      background-size: 22px 22px;
-    }
-
-    .route-preview[data-kind="archive"]::before {
-      inset: 28px 38px;
-      background:
-        linear-gradient(#f0d1d4 0 8px, transparent 8px 15px),
-        linear-gradient(#f0d1d4 0 8px, transparent 8px 15px),
-        linear-gradient(#f0d1d4 0 8px, transparent 8px 15px),
-        #ffffff;
-      background-position: 16px 18px, 16px 42px, 16px 66px, 0 0;
-      background-repeat: no-repeat;
-      background-size: calc(100% - 32px) 15px, calc(78% - 32px) 15px, calc(88% - 32px) 15px, 100% 100%;
-    }
-
-    .route-preview[data-kind="pin"] .route-preview-icon {
-      background: var(--red);
-    }
-
-    .route-preview[data-kind="map"] .route-preview-icon {
-      background: var(--plum);
-    }
-
-    .route-preview[data-kind="archive"] .route-preview-icon {
-      background: var(--gold);
-    }
-
-    .results-layout {
-      display: grid;
-      gap: 0;
-      border-top: 1px solid var(--line-strong);
-    }
-
-    .comparison-header,
-    .comparison-row {
-      display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 2fr) minmax(100px, 0.7fr);
-      gap: 24px;
-      align-items: center;
-    }
-
-    .comparison-header > *,
-    .comparison-row > * {
-      min-width: 0;
-    }
-
-    .comparison-header {
-      color: var(--muted);
-      font-size: 12px;
-      text-transform: uppercase;
-      padding: 14px 0 10px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .comparison-row {
-      min-height: 68px;
-      border-bottom: 1px solid var(--line);
-      padding: 18px 0;
-    }
-
-    .model-name {
-      color: #3a151c;
-      font-weight: 600;
-      overflow-wrap: anywhere;
-    }
-
-    .bar-track {
-      height: 10px;
-      background: #ece3df;
-      position: relative;
-      overflow: hidden;
-      border-radius: 999px;
-    }
-
-    .bar-fill {
-      display: block;
-      height: 100%;
-      width: var(--bar-width, 0%);
-      background: var(--teal);
-      border-radius: inherit;
-    }
-
-    .chart-cell {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 58px;
-      gap: 14px;
-      align-items: center;
-      min-width: 0;
-    }
-
-    .score-value,
-    .cost-value {
-      color: var(--ink);
-      font-weight: 620;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .cost-cell {
-      color: var(--muted);
-      font-size: 14px;
-      text-align: right;
-      white-space: nowrap;
-    }
-
-    .results-note {
-      margin: 16px 0 0;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.5;
-    }
-
-    .highlight-grid {
-      display: grid;
-      gap: 0;
-    }
-
-    .highlight-intro {
-      margin: -8px 0 30px;
-      color: var(--muted);
-      font-size: 17px;
-      line-height: 1.52;
-    }
-
-    .highlight-item {
-      border-top: 1px solid var(--line-strong);
-      padding: 34px 0;
-    }
-
-    .highlight-item h3 {
-      margin: 0 0 12px;
-      color: var(--ink);
-      font-size: clamp(24px, 3vw, 36px);
-      line-height: 1.08;
-      font-weight: 620;
-      letter-spacing: 0;
-    }
-
-    .highlight-item p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 17px;
-      line-height: 1.52;
-    }
-
-    .highlight-copy {
-      display: grid;
-      gap: 14px;
-    }
-
-    .coverage-legend {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      font-size: 13px;
-    }
-
-    .coverage-legend li {
-      border: 1px solid var(--line-strong);
-      background: var(--paper);
-      color: var(--muted);
-      padding: 5px 9px;
-    }
-
-    .footer {
-      border-top: 1px solid var(--line);
-      padding: 32px 0 42px;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .footer-inner {
-      width: 100%;
-      max-width: calc(var(--max) + var(--page-gutter) + var(--page-gutter));
-      margin: 0 auto;
-      padding: 0 var(--page-gutter);
-      display: flex;
-      justify-content: space-between;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-
-    @media (max-width: 900px) {
-      .nav {
-        min-height: 58px;
-      }
-
-      .nav-links {
-        gap: 14px;
-      }
-
-      .hero {
-        padding-top: 46px;
-      }
-
-      .hero-copy {
-        max-width: 720px;
-      }
-
-      .results-layout {
-        grid-template-columns: 1fr;
-      }
-
-      .comparison-header {
-        display: none;
-      }
-
-      .comparison-row {
-        grid-template-columns: 1fr;
-        gap: 8px;
-        border-bottom: 1px solid var(--line);
-        padding-bottom: 12px;
-      }
-
-      .chart-cell {
-        grid-template-columns: minmax(0, 1fr) 54px;
-      }
-
-      .cost-cell::before {
-        content: "Average cost / problem";
-        color: var(--muted);
-        font-size: 12px;
-        text-transform: uppercase;
-      }
-
-      .cost-cell {
-        display: flex;
-        justify-content: space-between;
-        text-align: left;
-      }
-
-      .example-panel {
-        min-height: auto;
-        gap: 28px;
-        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-      }
-
-      .examples-shell {
-        padding: 14px;
-      }
-
-    }
-
-    @media (max-width: 760px) {
-      .example-panel {
-        grid-template-columns: 1fr;
-      }
-
-      .route-preview {
-        min-height: 240px;
-      }
-
-    }
-
-    @media (max-width: 620px) {
-      :root {
-        --page-gutter: 18px;
-      }
-
-      .site-header {
-        position: static;
-      }
-
-      .nav {
-        align-items: flex-start;
-        flex-direction: column;
-        padding: 14px var(--page-gutter);
-        gap: 10px;
-      }
-
-      .nav-links {
-        width: 100%;
-        overflow-x: auto;
-        padding-bottom: 4px;
-        gap: 18px;
-        font-size: 13px;
-      }
-
-      .hero {
-        padding: 34px var(--page-gutter) 42px;
-      }
-
-      h1 {
-        font-size: clamp(40px, 12.5vw, 56px);
-        line-height: 1;
-      }
-
-      .hero-copy {
-        margin-top: 18px;
-        font-size: 19px;
-        line-height: 1.28;
-      }
-
-      .release-note {
-        margin-top: 16px;
-      }
-
-      .section {
-        padding: 48px 0;
-      }
-
-      .section-heading {
-        margin-bottom: 18px;
-      }
-
-      .tab-button {
-        min-width: auto;
-        min-height: 38px;
-        padding: 7px 13px;
-        font-size: 13px;
-      }
-
-      .tabs {
-        flex-wrap: wrap;
-        overflow-x: visible;
-      }
-
-      .tabs .tab-button {
-        flex: 1 1 calc(50% - 8px);
-      }
-
-      .examples-shell {
-        padding: 8px;
-      }
-
-      .example-panel {
-        gap: 24px;
-        padding: 22px 12px 12px;
-      }
-
-      .block-header {
-        align-items: flex-start;
-        flex-direction: column;
-        gap: 10px;
-      }
-
-      .language-toggle {
-        width: 100%;
-      }
-
-      .language-toggle button {
-        min-width: 0;
-      }
-
-      .qa-stack {
-        gap: 16px;
-      }
-
-      .question-block,
-      .answer-block,
-      .route-block {
-        padding-top: 15px;
-      }
-
-      .question-text {
-        font-size: 16px;
-        line-height: 1.44;
-      }
-
-      .answer-text {
-        font-size: 19px;
-      }
-
-      .route-list li {
-        grid-template-columns: 32px minmax(0, 1fr);
-        gap: 10px;
-        min-height: 40px;
-      }
-
-      .route-icon {
-        width: 28px;
-        height: 28px;
-      }
-
-      .route-preview {
-        min-height: 210px;
-        margin-top: 12px;
-      }
-
-    }
-
-    @media (max-width: 420px) {
-      :root {
-        --page-gutter: 14px;
-      }
-
-      .brand {
-        gap: 9px;
-      }
-
-      .brand-mark {
-        width: 28px;
-        height: 28px;
-      }
-
-      h1 {
-        font-size: clamp(36px, 11.5vw, 46px);
-      }
-
-      .hero-copy {
-        font-size: 18px;
-      }
-
-      .route-preview {
-        min-height: 190px;
-      }
-
-      .highlight-intro,
-      .highlight-item p {
-        font-size: 16px;
-      }
-    }
-  </style>
-</head>
-<body>
-  <header class="site-header">
-    <nav class="nav" aria-label="Primary">
-      <div class="brand">
-        <span class="brand-mark" aria-hidden="true">H</span>
-        <span>Hyper-BrowseComp</span>
-      </div>
-      <div class="nav-links">
-        <a href="#examples">Examples</a>
-        <a href="#dataset">Dataset</a>
-        <a href="#results">Results</a>
-      </div>
-    </nav>
-  </header>
-
-  <main>
-    <section class="hero" aria-labelledby="page-title">
-      <div class="hero-grid">
-        <div>
-          <h1 id="page-title">Hyper-BrowseComp</h1>
-          <p class="hero-copy">
-            A multilingual, multimodal stress test for browsing agents.
-          </p>
-          <p class="release-note">On-going project. Full release soon.</p>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#202936">
+    <meta name="description" content="HyperBrowseComp is a multilingual and multimodal benchmark for web-browsing agents.">
+    <title>HyperBrowseComp</title>
+    <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="styles.css">
+    <script src="main.js" defer></script>
+  </head>
+  <body>
+    <header class="masthead">
+      <div class="masthead-inner">
+        <div class="project-title">
+          <img class="project-logo" src="assets/logo.svg" alt="" width="68" height="68">
+          <h1>HyperBrowseComp</h1>
         </div>
+        <p class="subtitle">A Multilingual and Multimodal Stress Test for Web-Browsing Agents</p>
+        <p class="authors">Author names forthcoming</p>
+        <p class="affiliations">Affiliations forthcoming</p>
+        <nav class="resource-links" aria-label="Project resources">
+          <span class="resource-link placeholder-link" title="Paper link forthcoming">↗ <span>Paper</span></span>
+          <span class="resource-link placeholder-link" title="Code link forthcoming">⌘ <span>Code</span></span>
+          <span class="resource-link placeholder-link" title="Dataset link forthcoming">↓ <span>Dataset</span></span>
+        </nav>
       </div>
-    </section>
+    </header>
 
-    <section class="section" id="examples" aria-labelledby="examples-title">
-      <div class="section-inner">
-        <div class="section-heading">
-          <h2 id="examples-title">Dataset Examples</h2>
-        </div>
-
-        <div class="examples-shell">
-          <div class="tabs" role="tablist" aria-label="Dataset examples">
-            <button class="tab-button" type="button" role="tab" aria-selected="true" aria-controls="example-panel" id="tab-0" data-tab="0">DE Example</button>
-            <button class="tab-button" type="button" role="tab" aria-selected="false" aria-controls="example-panel" id="tab-1" data-tab="1">ZH Example</button>
-            <button class="tab-button" type="button" role="tab" aria-selected="false" aria-controls="example-panel" id="tab-2" data-tab="2">ID Example</button>
-            <button class="tab-button" type="button" role="tab" aria-selected="false" aria-controls="example-panel" id="tab-3" data-tab="3">KO Example</button>
+    <main>
+      <section class="section introduction" id="overview">
+        <p class="intro-copy">
+          HyperBrowseComp stress-tests whether web-browsing agents can find and
+          verify obscure answers on the open web. Its deliberately difficult
+          questions are authored in their source languages; many require
+          multi-step searches that connect evidence across webpages, videos,
+          maps, images, audio, and documents.
+        </p>
+        <div class="stat-grid" id="overview-stats" aria-label="Benchmark summary">
+          <div class="stat-item">
+            <strong data-stat="questions">…</strong>
+            <span>Human-authored questions</span>
           </div>
+          <div class="stat-item">
+            <strong data-stat="languages">…</strong>
+            <span>Source languages</span>
+          </div>
+          <div class="stat-item stat-modality">
+            <div class="modality-icons" aria-hidden="true">
+              <svg viewBox="0 0 32 32"><rect x="4" y="7" width="24" height="18" rx="3"/><path d="m14 12 7 4-7 4z"/></svg>
+              <svg viewBox="0 0 32 32"><path d="m4 9 8-3 8 3 8-3v17l-8 3-8-3-8 3zM12 6v17M20 9v17"/></svg>
+              <svg viewBox="0 0 32 32"><path d="M8 4h11l5 5v19H8zM19 4v6h5M12 15h8M12 20h8"/></svg>
+            </div>
+            <strong>Multimodal</strong>
+            <span>Video, maps, documents, and more</span>
+          </div>
+        </div>
+      </section>
 
-          <article class="example-panel" id="example-panel" role="tabpanel" aria-labelledby="tab-0">
-            <div class="qa-stack">
-              <div class="question-block">
-                <div class="block-header">
-                  <p class="label">Question</p>
-                  <div class="language-toggle" aria-label="Question language">
-                    <button type="button" data-question-view="translation" aria-pressed="true">English</button>
-                    <button type="button" data-question-view="original" aria-pressed="false" id="original-language-button">Original</button>
-                  </div>
+      <section class="section examples-section" id="examples" aria-labelledby="examples-title">
+        <h2 id="examples-title">Examples</h2>
+        <div class="example-tabs" id="example-tabs" role="tablist" aria-label="Benchmark examples"></div>
+        <div class="example-viewer" id="example-panel" role="tabpanel" aria-label="Selected example">
+          <div class="example-copy">
+            <div class="question-panel">
+              <div class="question-toolbar">
+                <p class="small-label" id="question-language">Example question</p>
+                <div class="question-toggle" role="group" aria-label="Question language">
+                  <button type="button" id="show-english" class="is-selected" aria-pressed="true">English</button>
+                  <button type="button" id="show-original" aria-pressed="false">Original</button>
                 </div>
-                <p class="question-text" id="example-question" lang="en"></p>
               </div>
-
-              <div class="answer-block">
-                <p class="label">Answer</p>
-                <p class="answer-text" id="example-answer"></p>
-              </div>
-
-              <p class="language-note" id="language-note"></p>
+              <p class="question-text" id="example-question">Loading examples…</p>
             </div>
-
-            <div class="route-block">
-              <p class="label">Evidence route</p>
-              <ol class="route-list" id="example-route"></ol>
-              <div class="route-preview" id="route-preview" aria-label="Evidence route illustration">
-                <img class="route-preview-image" id="route-preview-image" alt="">
-                <span class="route-preview-icon" id="route-preview-icon" aria-hidden="true"></span>
+            <div class="answer-line">
+              <span class="small-label">Answer</span>
+              <strong id="example-answer">—</strong>
+            </div>
+          </div>
+          <div class="evidence-column">
+            <div class="evidence-stage">
+              <img class="evidence-image is-active" id="evidence-image-a" src="assets/examples/de-1.webp" alt="Initial German example evidence screenshot">
+              <img class="evidence-image" id="evidence-image-b" alt="" aria-hidden="true">
+            </div>
+            <div class="evidence-meta">
+              <div>
+                <p class="small-label" id="evidence-index">Evidence</p>
+                <h3 id="evidence-title">Loading evidence…</h3>
+                <p id="evidence-description"></p>
               </div>
             </div>
-          </article>
+            <div class="evidence-controls">
+              <button type="button" id="previous-step" aria-label="Previous evidence image">←</button>
+              <div class="evidence-progress" id="evidence-progress" aria-hidden="true"></div>
+              <button type="button" id="next-step" aria-label="Next evidence image">→</button>
+            </div>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="section" id="dataset" aria-label="Benchmark highlights">
-      <div class="section-inner">
-        <p class="highlight-intro">
-          Inspired by BrowseComp, Hyper-BrowseComp turns the difficulty up. Its prompts are broader across languages, modalities, and task formats, moving beyond trivia-like clue intersections toward searches that require models to navigate videos, maps, documents, and records. Every example is meticulously hand-crafted and validated.
+      <section class="section" id="benchmark" aria-labelledby="benchmark-title">
+        <h2 id="benchmark-title">How the questions are built</h2>
+        <p class="section-copy">
+          Native or highly proficient speakers write each question from a publicly
+          verifiable answer and its supporting sources. A second annotator checks
+          the answer, the evidence, and whether the question is unambiguous.
+          Candidate questions are also tested without internet access, and easier
+          ones are excluded.
         </p>
 
-        <div class="highlight-grid">
-          <div class="highlight-item">
-            <h3>Multilingual</h3>
-            <div class="highlight-copy">
-              <p>Unlike English-centric browsing benchmarks, Hyper-BrowseComp asks questions in many source languages and often requires models to work across multilingual text, audio, and video before they can settle on an answer. Current coverage includes the languages below, with more to be added.</p>
-              <ul class="coverage-legend" aria-label="Current language coverage">
-                <li>Chinese</li>
-                <li>Egyptian Arabic</li>
-                <li>German</li>
-                <li>Indonesian</li>
-                <li>Javanese</li>
-                <li>Kazakh</li>
-                <li>Korean</li>
-                <li>Russian</li>
-                <li>Spanish</li>
-                <li>Telugu</li>
-                <li>Thai</li>
-                <li>Uzbek</li>
-                <li>Vietnamese</li>
-              </ul>
-            </div>
-          </div>
-          <div class="highlight-item">
-            <h3>Elevated difficulty</h3>
-            <div class="highlight-copy">
-              <p>We are strongly inspired by BrowseComp, but Hyper-BrowseComp pushes beyond trivia-like intersections of vague descriptions. Many tasks require locating specific information inside books, PDFs, papers, videos, official tables, maps, and other sources that are unlikely to be stored directly in model weights.</p>
-              <p>Each task still has a compact answer, but reaching it can require identifying entities, disambiguating records, calculating from data, or aggregating many small clues. The benchmark rewards careful search strategy, source selection, and final-answer verification.</p>
-            </div>
-          </div>
-          <div class="highlight-item">
-            <h3>Multimodal web navigation</h3>
-            <div class="highlight-copy">
-              <p>Beyond plain text search, Hyper-BrowseComp can require models to interpret or aggregate information from images, audio, video, maps, and interactive websites. A solver may need to combine a video frame, a public record, a map position, and a current storefront before the answer becomes clear.</p>
-              <p>This makes the benchmark closer to real browsing work: the relevant evidence is often distributed across modalities, interfaces, and languages, and the model must decide which tool or source is worth consulting next.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+        <figure class="data-figure" id="language-figure">
+          <div class="figure-heading"><h3>Languages</h3><p>Questions by source language</p></div>
+          <div class="distribution-chart" id="language-chart" aria-label="Questions by source language"></div>
+        </figure>
 
-    <section class="section" id="results" aria-labelledby="results-title">
-      <div class="section-inner">
-        <div class="section-heading">
-          <h2 id="results-title">Current model results</h2>
-        </div>
-
-        <div class="results-layout" aria-label="Current model comparison">
-          <div class="comparison-header" aria-hidden="true">
-            <span>Model</span>
-            <span>Accuracy</span>
-            <span>Average cost / problem</span>
-          </div>
-
-          <div class="comparison-row">
-            <span class="model-name">Qwen 3.7 Max</span>
-            <div class="chart-cell" aria-label="14.3% accuracy">
-              <span class="bar-track"><span class="bar-fill" style="--bar-width: 14.3%;"></span></span>
-              <span class="score-value">14.3%</span>
+        <figure class="data-figure" id="domain-figure">
+          <div class="figure-heading"><h3>Primary domains</h3><p>One domain per question</p></div>
+          <div class="domain-layout">
+            <div class="domain-viz">
+              <div class="domain-pie-wrap">
+                <svg class="domain-pie" id="domain-pie" viewBox="0 0 200 200" role="group" aria-label="Primary-domain distribution"></svg>
+                <span class="donut-center">Primary<br>domains</span>
+              </div>
+              <p class="domain-detail" id="domain-detail" aria-live="polite">Hover or focus on a slice to inspect it.</p>
             </div>
-            <span class="cost-cell">
-              <span class="cost-value">$5.20</span>
-            </span>
+            <div class="domain-legend" id="domain-legend"></div>
           </div>
+        </figure>
 
-          <div class="comparison-row">
-            <span class="model-name">GLM 5.2</span>
-            <div class="chart-cell" aria-label="15.0% accuracy">
-              <span class="bar-track"><span class="bar-fill" style="--bar-width: 15%;"></span></span>
-              <span class="score-value">15.0%</span>
-            </div>
-            <span class="cost-cell">
-              <span class="cost-value">$4.10</span>
-            </span>
-          </div>
-        </div>
+        <figure class="data-figure" id="modality-figure">
+          <div class="figure-heading"><h3>Evidence and task types</h3><p>Questions can belong to several categories</p></div>
+          <div class="distribution-chart modality-chart" id="modality-chart" aria-label="Question counts by evidence and task type"></div>
+        </figure>
+      </section>
 
-        <p class="results-note">
-          More model results are coming soon. Current numbers are measured on a subset of the benchmark while the dataset continues to grow.
+      <section class="section" id="results" aria-labelledby="results-title">
+        <h2 id="results-title">Baseline accuracy</h2>
+        <p class="section-copy">
+          Native search leaves most questions unanswered. Exa improves the GPT-5.6
+          Sol result but lowers both Gemini results. The OWL run also scores below
+          Gemini's native-search result.
         </p>
-      </div>
-    </section>
-  </main>
+        <figure class="data-figure" id="accuracy-figure">
+          <div class="figure-heading"><h3>Accuracy by browsing setting</h3><p>Share of questions answered correctly</p></div>
+          <div class="accuracy-chart" id="accuracy-chart" aria-label="Model accuracy by browsing setting"></div>
+        </figure>
+      </section>
 
-  <footer class="footer">
-    <div class="footer-inner">
-      <span>Hyper-BrowseComp</span>
-    </div>
-  </footer>
+      <section class="section citation-section" id="citation" aria-labelledby="citation-title">
+        <h2 id="citation-title">Citation</h2>
+        <p>Placeholder until public author and publication details are available.</p>
+        <pre><code>@misc{hyperbrowsecomp,
+  title  = {HyperBrowseComp: A Multilingual and Multimodal Stress Test for Web-Browsing Agents},
+  author = {Authors forthcoming},
+  note   = {Preprint forthcoming}
+}</code></pre>
+      </section>
+    </main>
 
-  <script>
-    const examples = [
-      {
-        language: {
-          code: "de",
-          label: "Deutsch"
-        },
-        question: {
-          original: "In einem Video, in dem ein YouTuber das neue Update 1.58 von ETS2 vorstellt, fährt er durch eine Stadt, um die überarbeitete Karte zu zeigen. Dabei bemerkt er, dass die Spieleentwickler zwar korrekt ein 30er-Tempolimit-Schild an einem bestimmten Pfosten angebracht haben, wie es auch im echten Leben der Fall ist, den Gehweg jedoch fälschlicherweise nicht als Pflasterstein modelliert haben. An der entsprechenden realen Stelle, einige Meter zurück auf der linken Straßenseite, befindet sich eine Bank. Welcher fortgeführte Geschäftsbereich dieser Bank wies laut ihrem Vergütungsbericht für das Geschäftsjahr 2010 den zweithöchsten operativen Gewinn auf?",
-          translation: "In a video of a YouTuber showcasing the new 1.58 update of ETS2, he drives around a city to show its map rework. At one point, he points out that the game developers correctly placed a 30 speed-limit sign on a specific pole as in real life, but incorrectly modeled a sidewalk that should be cobblestone. At the corresponding real-life location, a few meters back on the left side of the road, there is a bank. In this bank's remuneration report for 2010, which continuing operation had the second-highest operating profit?"
-        },
-        answer: "Wealth Management & Swiss Bank",
-        route: [
-          {
-            icon: "video",
-            label: "Find the source video",
-            text: "Identify the YouTube video covering the ETS2 1.58 map rework.",
-            image: "assets/hyperbrowsecomp/de-example-1.webp"
-          },
-          {
-            icon: "pin",
-            label: "Isolate the exact moment",
-            text: "Find the timestamp where the creator discusses the 30 speed-limit sign and cobblestone sidewalk mismatch.",
-            image: "assets/hyperbrowsecomp/de-example-2.webp"
-          },
-          {
-            icon: "map",
-            label: "Match the real location",
-            text: "Map the in-game street segment to the corresponding real-world pole, sidewalk, and road orientation.",
-            image: "assets/hyperbrowsecomp/de-example-3.webp"
-          },
-          {
-            icon: "archive",
-            label: "Read the bank report",
-            text: "Identify the nearby bank, open its 2010 remuneration report, and compare operating profit across continuing operations.",
-            image: "assets/hyperbrowsecomp/de-example-4.webp"
-          }
-        ]
-      },
-      {
-        language: {
-          code: "zh",
-          label: "Chinese"
-        },
-        question: {
-          original: "某场秋季拍卖中有一件无底价水墨纸本草书拍品，面积约 0.161 平方米；在同场同专场中，编号比这件拍品大 3 的另一件拍品为绘画作品，画面中有三只动物。该拍品所书内容为一首共八句的唐诗，诗作者是唐玄宗时期的一位诗人，内容为其酬答另一位诗人。根据拍品图片中的实际书写布局，而非拍卖页面转录的款识文字，按传统阅读顺序读取正文诗句部分每一列最上方的第一个字。输出这些字连成的五字结果。",
-          translation: "In an autumn auction, there was a no-reserve ink-on-paper cursive-calligraphy lot measuring about 0.161 square meters. In the same auction session, the lot whose number is three higher than this calligraphy lot is a painting by another artist, and the painting image contains three animals. The calligraphy lot transcribes an eight-line Tang poem written by a poet active during Emperor Xuanzong's reign, in response to another poet. Using the actual layout shown in the lot image, rather than the inscription text transcribed on the auction page, read the first character at the top of each vertical column in the main poem text, following traditional reading order. Output the resulting five Chinese characters."
-        },
-        answer: "晚不知山渔",
-        route: [
-          {
-            icon: "search",
-            label: "Locate auction candidates",
-            text: "Find autumn auction sessions with no-reserve ink-on-paper cursive calligraphy lots near 0.161 square meters.",
-            image: "assets/hyperbrowsecomp/zh-example-1.webp"
-          },
-          {
-            icon: "archive",
-            label: "Locate poem candidates",
-            text: "Use the auction transcription and Tang-poem clues to identify candidate eight-line response poems.",
-            image: "assets/hyperbrowsecomp/zh-example-2.webp"
-          },
-          {
-            icon: "pin",
-            label: "Validate and confirm",
-            text: "Confirm the calligraphy lot, poem, and lot-number-plus-three painting with three animals all belong to the same auction session.",
-            image: "assets/hyperbrowsecomp/zh-example-3.webp"
-          },
-          {
-            icon: "scan",
-            label: "Extract from the image",
-            text: "Use OCR or visual reading on the lot image, then take the top character of each main-text column in traditional order.",
-            image: "assets/hyperbrowsecomp/zh-example-4.webp"
-          }
-        ]
-      },
-      {
-        language: {
-          code: "id",
-          label: "Indonesian"
-        },
-        question: {
-          original: "Identifikasi acara wisuda universitas di mana sambutan rektornya menyebutkan 17 akreditasi AQAS, 47 mahasiswa mengikuti IISMA, dan kemampuan AI mempelajari Wikipedia dalam hitungan hari. Di wisuda yang sama, ada 1 mahasiswa yang dipanggil yang kemudian mempublikasikan 1 paper di NAACL 2024 dan 1 ACL 2026 Findings. Setelah mahasiswa tersebut, ada berapa total mahasiswa dengan gelar 'S.T.' yang dipanggil?",
-          translation: "Identify the Indonesian university graduation ceremony where the Rector's opening speech mentions 17 AQAS accreditations, 47 students selected for IISMA, and AI's ability to learn Wikipedia in days. Later in the ceremony, there is exactly 1 student called who later published 1 paper at NAACL 2024 and 1 at ACL 2026 Findings. After him, how many total students with the title 'S.T.' are called?"
-        },
-        answer: "14",
-        route: [
-          {
-            icon: "video",
-            label: "Locate the graduation video",
-            text: "Find the ceremony video whose rector's opening speech contains the three anchor details.",
-            image: "assets/hyperbrowsecomp/id-example-1.webp"
-          },
-          {
-            icon: "search",
-            label: "Identify the target student and timestamp",
-            text: "Match the called student to the later NAACL 2024 and ACL 2026 Findings publications, then locate when he is called.",
-            image: "assets/hyperbrowsecomp/id-example-2.webp"
-          },
-          {
-            icon: "scan",
-            label: "Count the remaining S.T. graduates",
-            text: "Continue from that point and count all subsequent students called with the S.T. title.",
-            image: "assets/hyperbrowsecomp/id-example-3.webp"
-          }
-        ]
-      },
-      {
-        language: {
-          code: "ko",
-          label: "Korean"
-        },
-        question: {
-          original: "태아가 아직 자궁 안에 있을 때 아기의 성별을 바꾸는 방법을 포함하고 있으며, 2013년에 영어로 번역된 의학 문헌을 찾으십시오. 대학 교수가 번역한 판본을 사용하십시오. 이 판본은 3쪽의 큰 빨간 도장, 92쪽 위쪽에 붙은 “1962” 스티커, 19쪽의 인체 해부도 그림으로 식별할 수 있습니다. 그 특정 판본에서 20쪽의 첫 번째로 인쇄된 줄을 유니코드로 적으시오. 줄바꿈은 제외하되, 공백과 문장부호는 인쇄된 그대로 포함하십시오.",
-          translation: "Find the medical text, translated into English in 2013, that includes a method for changing the gender of a baby while it is still in the mother's womb. Use the version modernized by a university professor. This version can be identified by a large red stamp on page 3, a sticker with the number “1962” written across the top on page 92, and a human anatomy diagram on page 19. In that specific version, write the first printed line of page 20 in Unicode. Exclude the line break, but preserve spaces and punctuation exactly as printed."
-        },
-        answer: "손진인이왈천리간의사람이귀중하니머리둥굴함은",
-        route: [
-          {
-            icon: "search",
-            label: "Identify the medical text",
-            text: "Use the content clue and 2013 English translation detail to determine the source text.",
-            image: "assets/hyperbrowsecomp/ko-example-1.webp"
-          },
-          {
-            icon: "archive",
-            label: "Find the correct version",
-            text: "Match the version using the red stamp, 1962 sticker, and anatomy diagram page markers.",
-            image: "assets/hyperbrowsecomp/ko-example-2.webp"
-          },
-          {
-            icon: "scan",
-            label: "Extract the first line",
-            text: "Read page 20 of that version and transcribe the first printed line exactly in Unicode.",
-            image: "assets/hyperbrowsecomp/ko-example-3.webp"
-          }
-        ]
-      }
-    ];
-
-    const routeIcons = {
-      archive: '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16"/><path d="M6 7v12h12V7"/><path d="M8 4h8l2 3H6l2-3Z"/><path d="M10 11h4"/></svg>',
-      map: '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18-6 3V6l6-3 6 3 6-3v15l-6 3-6-3Z"/><path d="M9 3v15"/><path d="M15 6v15"/></svg>',
-      park: '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21v-8"/><path d="M7 13a5 5 0 0 1 10 0"/><path d="M5 17a7 7 0 0 1 14 0"/><path d="M9 21h6"/></svg>',
-      pin: '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-5.2 7-12a7 7 0 0 0-14 0c0 6.8 7 12 7 12Z"/><circle cx="12" cy="9" r="2.5"/></svg>',
-      scan: '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V5a1 1 0 0 1 1-1h2"/><path d="M17 4h2a1 1 0 0 1 1 1v2"/><path d="M20 17v2a1 1 0 0 1-1 1h-2"/><path d="M7 20H5a1 1 0 0 1-1-1v-2"/><path d="M7 9h10"/><path d="M7 13h7"/><path d="M7 17h4"/></svg>',
-      search: '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4 4"/></svg>',
-      train: '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h10a3 3 0 0 1 3 3v8a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4V6a3 3 0 0 1 3-3Z"/><path d="M8 21l2-3"/><path d="M16 21l-2-3"/><path d="M4 10h16"/><circle cx="8" cy="14" r="1"/><circle cx="16" cy="14" r="1"/></svg>',
-      video: '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="m16 10 5-3v10l-5-3Z"/></svg>'
-    };
-
-    const tabs = Array.from(document.querySelectorAll("[data-tab]"));
-    const questionViewButtons = Array.from(document.querySelectorAll("[data-question-view]"));
-    const originalLanguageButton = document.querySelector("#original-language-button");
-    const panel = document.querySelector("#example-panel");
-    const question = document.querySelector("#example-question");
-    const languageNote = document.querySelector("#language-note");
-    const answer = document.querySelector("#example-answer");
-    const route = document.querySelector("#example-route");
-    const routePreview = document.querySelector("#route-preview");
-    const routePreviewImage = document.querySelector("#route-preview-image");
-    const routePreviewIcon = document.querySelector("#route-preview-icon");
-    let currentExample = 0;
-    let currentQuestionView = "translation";
-
-    function renderQuestionViewControls(example) {
-      originalLanguageButton.textContent = example.language.label;
-
-      questionViewButtons.forEach((button) => {
-        button.setAttribute("aria-pressed", String(button.dataset.questionView === currentQuestionView));
-      });
-    }
-
-    function renderRoutePreview(example, stepIndex, items = []) {
-      const step = example.route[stepIndex];
-
-      routePreview.dataset.kind = step.icon;
-      routePreviewIcon.innerHTML = routeIcons[step.icon] || routeIcons.search;
-      routePreview.classList.toggle("has-image", Boolean(step.image));
-
-      if (step.image) {
-        routePreviewImage.src = step.image;
-        routePreviewImage.alt = step.label;
-      } else {
-        routePreviewImage.removeAttribute("src");
-        routePreviewImage.alt = "";
-      }
-
-      items.forEach((item, itemIndex) => {
-        item.classList.toggle("is-active", itemIndex === stepIndex);
-      });
-    }
-
-    function renderExample(index) {
-      currentExample = index;
-      const example = examples[index];
-      question.textContent = example.question[currentQuestionView];
-      question.lang = currentQuestionView === "original" ? example.language.code : "en";
-      languageNote.textContent = `Official benchmark question is asked in ${example.language.label}. English translation is included for ablation and explanation only.`;
-      answer.textContent = example.answer;
-
-      route.replaceChildren();
-      const routeItems = [];
-      example.route.forEach((step, stepIndex) => {
-        const item = document.createElement("li");
-        const icon = document.createElement("span");
-        const copy = document.createElement("div");
-        const label = document.createElement("strong");
-
-        icon.className = "route-icon";
-        icon.innerHTML = routeIcons[step.icon] || routeIcons.search;
-        copy.className = "route-copy";
-        label.textContent = step.label;
-
-        copy.append(label);
-        item.append(icon, copy);
-        item.tabIndex = 0;
-        item.setAttribute("aria-label", `${step.label}. ${step.text}`);
-        item.addEventListener("mouseenter", () => renderRoutePreview(example, stepIndex, routeItems));
-        item.addEventListener("focus", () => renderRoutePreview(example, stepIndex, routeItems));
-        route.append(item);
-        routeItems.push(item);
-      });
-      renderRoutePreview(example, 0, routeItems);
-
-      tabs.forEach((tab, tabIndex) => {
-        const selected = tabIndex === index;
-        tab.setAttribute("aria-selected", String(selected));
-        tab.tabIndex = selected ? 0 : -1;
-      });
-      panel.setAttribute("aria-labelledby", `tab-${index}`);
-      renderQuestionViewControls(example);
-    }
-
-    tabs.forEach((tab) => {
-      tab.addEventListener("click", () => {
-        renderExample(Number(tab.dataset.tab));
-      });
-
-      tab.addEventListener("keydown", (event) => {
-        const current = tabs.indexOf(tab);
-        const next = event.key === "ArrowRight" ? current + 1 : event.key === "ArrowLeft" ? current - 1 : current;
-
-        if (next !== current) {
-          event.preventDefault();
-          const wrapped = (next + tabs.length) % tabs.length;
-          tabs[wrapped].focus();
-          renderExample(wrapped);
-        }
-      });
-    });
-
-    questionViewButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        currentQuestionView = button.dataset.questionView;
-        renderExample(currentExample);
-      });
-    });
-
-    renderExample(0);
-  </script>
-</body>
+    <footer class="site-footer">
+      <p>HyperBrowseComp</p>
+      <a href="#overview">Back to top ↑</a>
+    </footer>
+  </body>
 </html>

@@ -1,0 +1,194 @@
+[
+  {
+    "language": {
+      "code": "de",
+      "label": "Deutsch"
+    },
+    "question": {
+      "original": "In einem Video, in dem ein YouTuber das neue Update 1.58 von ETS2 vorstellt, fährt er durch eine Stadt, um die überarbeitete Karte zu zeigen. Dabei bemerkt er, dass die Spieleentwickler zwar korrekt ein 30er-Tempolimit-Schild an einem bestimmten Pfosten angebracht haben, wie es auch im echten Leben der Fall ist, den Gehweg jedoch fälschlicherweise nicht als Pflasterstein modelliert haben. An der entsprechenden realen Stelle, einige Meter zurück auf der linken Straßenseite, befindet sich eine Bank. Welcher fortgeführte Geschäftsbereich dieser Bank wies laut ihrem Vergütungsbericht für das Geschäftsjahr 2010 den zweithöchsten operativen Gewinn auf?",
+      "translation": "In a video of a YouTuber showcasing the new 1.58 update of ETS2, he drives around a city to show its map rework. At one point, he points out that the game developers correctly placed a 30 speed-limit sign on a specific pole as in real life, but incorrectly modeled a sidewalk that should be cobblestone. At the corresponding real-life location, a few meters back on the left side of the road, there is a bank. In this bank's remuneration report for 2010, which continuing operation had the second-highest operating profit?"
+    },
+    "answer": "Wealth Management & Swiss Bank",
+    "route": [
+      {
+        "icon": "video",
+        "label": "Find the source video",
+        "text": "Identify the YouTube video covering the ETS2 1.58 map rework.",
+        "image": "assets/examples/de-1.webp",
+        "highlights": {
+          "translation": ["a YouTuber showcasing the new 1.58 update of ETS2"],
+          "original": ["ein YouTuber das neue Update 1.58 von ETS2 vorstellt"]
+        }
+      },
+      {
+        "icon": "pin",
+        "label": "Isolate the exact moment",
+        "text": "Find the timestamp where the creator discusses the 30 speed-limit sign and cobblestone sidewalk mismatch.",
+        "image": "assets/examples/de-2.webp",
+        "highlights": {
+          "translation": ["30 speed-limit sign on a specific pole", "sidewalk that should be cobblestone"],
+          "original": ["30er-Tempolimit-Schild an einem bestimmten Pfosten", "Gehweg jedoch fälschlicherweise nicht als Pflasterstein modelliert"]
+        }
+      },
+      {
+        "icon": "map",
+        "label": "Match the real location",
+        "text": "Map the in-game street segment to the corresponding real-world pole, sidewalk, and road orientation.",
+        "image": "assets/examples/de-3.webp",
+        "highlights": {
+          "translation": ["At the corresponding real-life location, a few meters back on the left side of the road, there is a bank"],
+          "original": ["An der entsprechenden realen Stelle, einige Meter zurück auf der linken Straßenseite, befindet sich eine Bank"]
+        }
+      },
+      {
+        "icon": "archive",
+        "label": "Read the bank report",
+        "text": "Identify the nearby bank, open its 2010 remuneration report, and compare operating profit across continuing operations.",
+        "image": "assets/examples/de-4.webp",
+        "highlights": {
+          "translation": ["bank's remuneration report for 2010", "second-highest operating profit"],
+          "original": ["Vergütungsbericht für das Geschäftsjahr 2010", "zweithöchsten operativen Gewinn"]
+        }
+      }
+    ]
+  },
+  {
+    "language": {
+      "code": "zh",
+      "label": "Chinese"
+    },
+    "question": {
+      "original": "某场秋季拍卖中有一件无底价水墨纸本草书拍品，面积约 0.161 平方米；在同场同专场中，编号比这件拍品大 3 的另一件拍品为绘画作品，画面中有三只动物。该拍品所书内容为一首共八句的唐诗，诗作者是唐玄宗时期的一位诗人，内容为其酬答另一位诗人。根据拍品图片中的实际书写布局，而非拍卖页面转录的款识文字，按传统阅读顺序读取正文诗句部分每一列最上方的第一个字。输出这些字连成的五字结果。",
+      "translation": "In an autumn auction, there was a no-reserve ink-on-paper cursive-calligraphy lot measuring about 0.161 square meters. In the same auction session, the lot whose number is three higher than this calligraphy lot is a painting by another artist, and the painting image contains three animals. The calligraphy lot transcribes an eight-line Tang poem written by a poet active during Emperor Xuanzong's reign, in response to another poet. Using the actual layout shown in the lot image, rather than the inscription text transcribed on the auction page, read the first character at the top of each vertical column in the main poem text, following traditional reading order. Output the resulting five Chinese characters."
+    },
+    "answer": "晚不知山渔",
+    "route": [
+      {
+        "icon": "search",
+        "label": "Locate auction candidates",
+        "text": "Find autumn auction sessions with no-reserve ink-on-paper cursive calligraphy lots near 0.161 square meters.",
+        "image": "assets/examples/zh-1.webp",
+        "highlights": {
+          "translation": ["no-reserve ink-on-paper cursive-calligraphy lot measuring about 0.161 square meters"],
+          "original": ["无底价水墨纸本草书拍品，面积约 0.161 平方米"]
+        }
+      },
+      {
+        "icon": "archive",
+        "label": "Locate poem candidates",
+        "text": "Use the auction transcription and Tang-poem clues to identify candidate eight-line response poems.",
+        "image": "assets/examples/zh-2.webp",
+        "highlights": {
+          "translation": ["an eight-line Tang poem written by a poet active during Emperor Xuanzong's reign"],
+          "original": ["一首共八句的唐诗，诗作者是唐玄宗时期的一位诗人"]
+        }
+      },
+      {
+        "icon": "pin",
+        "label": "Validate and confirm",
+        "text": "Confirm the calligraphy lot, poem, and lot-number-plus-three painting with three animals all belong to the same auction session.",
+        "image": "assets/examples/zh-3.webp",
+        "highlights": {
+          "translation": ["lot whose number is three higher than this calligraphy lot", "painting image contains three animals"],
+          "original": ["编号比这件拍品大 3 的另一件拍品", "画面中有三只动物"]
+        }
+      },
+      {
+        "icon": "scan",
+        "label": "Extract from the image",
+        "text": "Use OCR or visual reading on the lot image, then take the top character of each main-text column in traditional order.",
+        "image": "assets/examples/zh-4.webp",
+        "highlights": {
+          "translation": ["read the first character at the top of each vertical column"],
+          "original": ["每一列最上方的第一个字"]
+        }
+      }
+    ]
+  },
+  {
+    "language": {
+      "code": "id",
+      "label": "Indonesian"
+    },
+    "question": {
+      "original": "Identifikasi acara wisuda universitas di mana sambutan rektornya menyebutkan 17 akreditasi AQAS, 47 mahasiswa mengikuti IISMA, dan kemampuan AI mempelajari Wikipedia dalam hitungan hari. Di wisuda yang sama, ada 1 mahasiswa yang dipanggil yang kemudian mempublikasikan 1 paper di NAACL 2024 dan 1 ACL 2026 Findings. Setelah mahasiswa tersebut, ada berapa total mahasiswa dengan gelar 'S.T.' yang dipanggil?",
+      "translation": "Identify the Indonesian university graduation ceremony where the Rector's opening speech mentions 17 AQAS accreditations, 47 students selected for IISMA, and AI's ability to learn Wikipedia in days. Later in the ceremony, there is exactly 1 student called who later published 1 paper at NAACL 2024 and 1 at ACL 2026 Findings. After him, how many total students with the title 'S.T.' are called?"
+    },
+    "answer": "14",
+    "route": [
+      {
+        "icon": "video",
+        "label": "Locate the graduation video",
+        "text": "Find the ceremony video whose rector's opening speech contains the three anchor details.",
+        "image": "assets/examples/id-1.webp",
+        "highlights": {
+          "translation": ["Rector's opening speech mentions 17 AQAS accreditations, 47 students selected for IISMA, and AI's ability to learn Wikipedia in days"],
+          "original": ["sambutan rektornya menyebutkan 17 akreditasi AQAS, 47 mahasiswa mengikuti IISMA, dan kemampuan AI mempelajari Wikipedia dalam hitungan hari"]
+        }
+      },
+      {
+        "icon": "search",
+        "label": "Identify the target student and timestamp",
+        "text": "Match the called student to the later NAACL 2024 and ACL 2026 Findings publications, then locate when he is called.",
+        "image": "assets/examples/id-2.webp",
+        "highlights": {
+          "translation": ["later published 1 paper at NAACL 2024 and 1 at ACL 2026 Findings"],
+          "original": ["kemudian mempublikasikan 1 paper di NAACL 2024 dan 1 ACL 2026 Findings"]
+        }
+      },
+      {
+        "icon": "scan",
+        "label": "Count the remaining S.T. graduates",
+        "text": "Continue from that point and count all subsequent students called with the S.T. title.",
+        "image": "assets/examples/id-3.webp",
+        "highlights": {
+          "translation": ["how many total students with the title 'S.T.' are called?"],
+          "original": ["berapa total mahasiswa dengan gelar 'S.T.' yang dipanggil?"]
+        }
+      }
+    ]
+  },
+  {
+    "language": {
+      "code": "ko",
+      "label": "Korean"
+    },
+    "question": {
+      "original": "태아가 아직 자궁 안에 있을 때 아기의 성별을 바꾸는 방법을 포함하고 있으며, 2013년에 영어로 번역된 의학 문헌을 찾으십시오. 대학 교수가 번역한 판본을 사용하십시오. 이 판본은 3쪽의 큰 빨간 도장, 92쪽 위쪽에 붙은 “1962” 스티커, 19쪽의 인체 해부도 그림으로 식별할 수 있습니다. 그 특정 판본에서 20쪽의 첫 번째로 인쇄된 줄을 유니코드로 적으시오. 줄바꿈은 제외하되, 공백과 문장부호는 인쇄된 그대로 포함하십시오.",
+      "translation": "Find the medical text, translated into English in 2013, that includes a method for changing the gender of a baby while it is still in the mother's womb. Use the version modernized by a university professor. This version can be identified by a large red stamp on page 3, a sticker with the number “1962” written across the top on page 92, and a human anatomy diagram on page 19. In that specific version, write the first printed line of page 20 in Unicode. Exclude the line break, but preserve spaces and punctuation exactly as printed."
+    },
+    "answer": "손진인이왈천리간의사람이귀중하니머리둥굴함은",
+    "route": [
+      {
+        "icon": "search",
+        "label": "Identify the medical text",
+        "text": "Use the content clue and 2013 English translation detail to determine the source text.",
+        "image": "assets/examples/ko-1.webp",
+        "highlights": {
+          "translation": ["medical text, translated into English in 2013", "changing the gender of a baby while it is still in the mother's womb"],
+          "original": ["2013년에 영어로 번역된 의학 문헌", "태아가 아직 자궁 안에 있을 때 아기의 성별을 바꾸는 방법"]
+        }
+      },
+      {
+        "icon": "archive",
+        "label": "Find the correct version",
+        "text": "Match the version using the red stamp, 1962 sticker, and anatomy diagram page markers.",
+        "image": "assets/examples/ko-2.webp",
+        "highlights": {
+          "translation": ["large red stamp on page 3", "“1962” written across the top on page 92", "human anatomy diagram on page 19"],
+          "original": ["3쪽의 큰 빨간 도장", "92쪽 위쪽에 붙은 “1962” 스티커", "19쪽의 인체 해부도 그림"]
+        }
+      },
+      {
+        "icon": "scan",
+        "label": "Extract the first line",
+        "text": "Read page 20 of that version and transcribe the first printed line exactly in Unicode.",
+        "image": "assets/examples/ko-3.webp",
+        "highlights": {
+          "translation": ["first printed line of page 20 in Unicode"],
+          "original": ["20쪽의 첫 번째로 인쇄된 줄을 유니코드로 적으시오"]
+        }
+      }
+    ]
+  }
+]

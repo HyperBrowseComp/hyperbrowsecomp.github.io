@@ -1,0 +1,201 @@
+{
+  "dataset": {
+    "questions": 423,
+    "languages": [
+      {
+        "name": "Indonesian",
+        "count": 39
+      },
+      {
+        "name": "Thai",
+        "count": 39
+      },
+      {
+        "name": "German",
+        "count": 38
+      },
+      {
+        "name": "Filipino",
+        "count": 36
+      },
+      {
+        "name": "Javanese",
+        "count": 35
+      },
+      {
+        "name": "Korean",
+        "count": 35
+      },
+      {
+        "name": "Spanish",
+        "count": 35
+      },
+      {
+        "name": "Chinese",
+        "count": 34
+      },
+      {
+        "name": "Telugu",
+        "count": 34
+      },
+      {
+        "name": "Egyptian Arabic",
+        "count": 32
+      },
+      {
+        "name": "Vietnamese",
+        "count": 25
+      },
+      {
+        "name": "Russian",
+        "count": 22
+      },
+      {
+        "name": "Uzbek",
+        "count": 19
+      }
+    ],
+    "primary_domains": [
+      {
+        "name": "Economics & Business",
+        "count": 80
+      },
+      {
+        "name": "Media & Entertainment",
+        "count": 67
+      },
+      {
+        "name": "Education",
+        "count": 48
+      },
+      {
+        "name": "Geography & Transport",
+        "count": 38
+      },
+      {
+        "name": "Games",
+        "count": 33
+      },
+      {
+        "name": "Music",
+        "count": 31
+      },
+      {
+        "name": "Arts & Culture",
+        "count": 29
+      },
+      {
+        "name": "Science & Technology",
+        "count": 29
+      },
+      {
+        "name": "History",
+        "count": 17
+      },
+      {
+        "name": "Politics & Law",
+        "count": 17
+      },
+      {
+        "name": "Sports",
+        "count": 15
+      },
+      {
+        "name": "Food & Drink",
+        "count": 14
+      },
+      {
+        "name": "Other",
+        "count": 5
+      }
+    ],
+    "modalities": [
+      {
+        "name": "Video / YouTube",
+        "count": 165
+      },
+      {
+        "name": "PDF / book / OCR",
+        "count": 126
+      },
+      {
+        "name": "Arithmetic",
+        "count": 119
+      },
+      {
+        "name": "Image",
+        "count": 78
+      },
+      {
+        "name": "Audio",
+        "count": 45
+      },
+      {
+        "name": "Tables",
+        "count": 43
+      },
+      {
+        "name": "Maps",
+        "count": 41
+      },
+      {
+        "name": "Plots / graphs",
+        "count": 8
+      }
+    ]
+  },
+  "results": {
+    "builtin": [
+      {
+        "model": "Gemini 3.7 Flash",
+        "correct": 134,
+        "total": 423
+      },
+      {
+        "model": "Gemini 3.1 Pro",
+        "correct": 108,
+        "total": 423
+      },
+      {
+        "model": "GPT-5.6 Sol",
+        "correct": 81,
+        "total": 423
+      },
+      {
+        "model": "GPT-5.6 Terra",
+        "correct": 67,
+        "total": 423
+      },
+      {
+        "model": "GPT-5.6 Luna",
+        "correct": 49,
+        "total": 423
+      }
+    ],
+    "exa": [
+      {
+        "model": "GPT-5.6 Sol",
+        "correct": 113,
+        "total": 423
+      },
+      {
+        "model": "Gemini 3.1 Pro",
+        "correct": 77,
+        "total": 423
+      },
+      {
+        "model": "Gemini 3.7 Flash",
+        "correct": 94,
+        "total": 423
+      }
+    ],
+    "owl": [
+      {
+        "model": "Gemini 3.7 Flash",
+        "correct": 75,
+        "total": 423
+      }
+    ]
+  },
+  "provenance": "Question and language counts come from retained dataset IDs. Primary-domain and modality counts are extracted from the attached manuscript distribution figure. Built-in/Exa results come from Inspect .eval score records, and OWL from the manuscript results table. No question, answer, or trace is included."
+}
