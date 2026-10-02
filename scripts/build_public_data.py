@@ -89,22 +89,41 @@ def scores_from_eval(path):
     return scores
 
 
-def owl_result_from_paper(paper_text, total):
+def table2_results_from_paper(paper_text, total):
     table = paper_text.split("Table 2: Performance", 1)[1].split(
         "Retrieval and harness sensitivity", 1
     )[0]
-    match = re.search(
-        r"^\s*(?:\d+\s+)?OWL\s+Gemini 3\.7 Flash(?:†)?\s+(\d+)\s+([\d.]+)%",
-        table,
+    pattern = re.compile(
+        r"^\s*(?:\d+\s+)?(Built-in|Exa|OWL)\s+(.+?)\s+"
+        r"(\d+)\s+([\d.]+)%\s+([\d.]+)\s+([\d.]+)\s*$",
         re.MULTILINE,
     )
-    if not match:
-        raise ValueError("Could not find the OWL row in the manuscript results table")
-    correct = int(match.group(1))
-    published_accuracy = float(match.group(2))
-    if round(correct / total * 100, 2) != published_accuracy:
-        raise ValueError("The manuscript's OWL count and accuracy disagree")
-    return {"model": "Gemini 3.7 Flash", "correct": correct, "total": total}
+    results = {}
+    for match in pattern.finditer(table):
+        setting = {"Built-in": "builtin", "Exa": "exa", "OWL": "owl"}[match.group(1)]
+        model = match.group(2).rstrip("†").strip()
+        correct = int(match.group(3))
+        published_accuracy = float(match.group(4))
+        total_tokens_m = float(match.group(5))
+        if round(correct / total * 100, 2) != published_accuracy:
+            raise ValueError(f"The manuscript's count and accuracy disagree for {setting} {model}")
+        if total_tokens_m <= 0:
+            raise ValueError(f"The manuscript's token count is invalid for {setting} {model}")
+        key = (setting, model)
+        if key in results:
+            raise ValueError(f"Duplicate manuscript result for {setting} {model}")
+        results[key] = {
+            "model": model, "correct": correct, "total": total,
+            "total_tokens_m": total_tokens_m,
+        }
+    expected = {
+        (setting, label)
+        for setting, specs in MODEL_FILES.items()
+        for label, _ in specs
+    } | {("owl", "Gemini 3.7 Flash")}
+    if set(results) != expected:
+        raise ValueError(f"Manuscript results do not match the expected models: {set(results) ^ expected}")
+    return results
 
 
 def figure_counts_from_paper(paper_text, labels, total, exclusive=False):
@@ -167,7 +186,14 @@ def main():
     paper_text = subprocess.check_output(
         ["pdftotext", "-layout", str(args.paper), "-"], text=True
     )
-    result_groups["owl"] = [owl_result_from_paper(paper_text, len(retained))]
+    paper_results = table2_results_from_paper(paper_text, len(retained))
+    for setting, rows in result_groups.items():
+        for row in rows:
+            paper_row = paper_results[(setting, row["model"])]
+            if row["correct"] != paper_row["correct"]:
+                raise ValueError(f"Evaluation and manuscript disagree for {setting} {row['model']}")
+            row["total_tokens_m"] = paper_row["total_tokens_m"]
+    result_groups["owl"] = [paper_results[("owl", "Gemini 3.7 Flash")]]
     public_data = {
         "dataset": {
             "questions": len(ids),
@@ -183,7 +209,7 @@ def main():
             ),
         },
         "results": result_groups,
-        "provenance": "Question and language counts come from retained dataset IDs. Primary-domain and modality counts are extracted from the attached manuscript distribution figure. Built-in/Exa results come from Inspect .eval score records, and OWL from the manuscript results table. No question, answer, or trace is included.",
+        "provenance": "Question and language counts come from retained dataset IDs. Primary-domain and modality counts are extracted from the attached manuscript distribution figure. Built-in/Exa accuracy comes from Inspect .eval score records; OWL accuracy and all token totals come from the manuscript results table. No question, answer, or trace is included.",
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(public_data, indent=2, ensure_ascii=False) + "\n")

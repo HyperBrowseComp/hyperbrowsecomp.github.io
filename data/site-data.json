@@ -149,53 +149,62 @@
       {
         "model": "Gemini 3.7 Flash",
         "correct": 134,
-        "total": 423
+        "total": 423,
+        "total_tokens_m": 14.1
       },
       {
         "model": "Gemini 3.1 Pro",
         "correct": 108,
-        "total": 423
+        "total": 423,
+        "total_tokens_m": 10.2
       },
       {
         "model": "GPT-5.6 Sol",
         "correct": 81,
-        "total": 423
+        "total": 423,
+        "total_tokens_m": 43.6
       },
       {
         "model": "GPT-5.6 Terra",
         "correct": 67,
-        "total": 423
+        "total": 423,
+        "total_tokens_m": 33.1
       },
       {
         "model": "GPT-5.6 Luna",
         "correct": 49,
-        "total": 423
+        "total": 423,
+        "total_tokens_m": 27.5
       }
     ],
     "exa": [
       {
         "model": "GPT-5.6 Sol",
         "correct": 113,
-        "total": 423
+        "total": 423,
+        "total_tokens_m": 928.8
       },
       {
         "model": "Gemini 3.1 Pro",
         "correct": 77,
-        "total": 423
+        "total": 423,
+        "total_tokens_m": 558.3
       },
       {
         "model": "Gemini 3.7 Flash",
         "correct": 94,
-        "total": 423
+        "total": 423,
+        "total_tokens_m": 663.9
       }
     ],
     "owl": [
       {
         "model": "Gemini 3.7 Flash",
         "correct": 75,
-        "total": 423
+        "total": 423,
+        "total_tokens_m": 195.3
       }
     ]
   },
-  "provenance": "Question and language counts come from retained dataset IDs. Primary-domain and modality counts are extracted from the attached manuscript distribution figure. Built-in/Exa results come from Inspect .eval score records, and OWL from the manuscript results table. No question, answer, or trace is included."
+  "provenance": "Question and language counts come from retained dataset IDs. Primary-domain and modality counts are extracted from the attached manuscript distribution figure. Built-in/Exa accuracy comes from Inspect .eval score records; OWL accuracy and all token totals come from the manuscript results table. No question, answer, or trace is included."
 }

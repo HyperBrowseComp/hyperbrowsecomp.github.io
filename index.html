@@ -139,11 +139,19 @@
         <p class="section-copy">
           Native search leaves most questions unanswered. Exa improves the GPT-5.6
           Sol result but lowers both Gemini results. The OWL run also scores below
-          Gemini's native-search result.
+          Gemini's native-search result. Exa uses substantially more tokens than
+          native search for each matched model.
         </p>
         <figure class="data-figure" id="accuracy-figure">
           <div class="figure-heading"><h3>Accuracy by browsing setting</h3></div>
           <div class="accuracy-chart" id="accuracy-chart" aria-label="Model accuracy by browsing setting"></div>
+          <div class="token-plot">
+            <div class="figure-heading"><h3>Accuracy versus token use</h3></div>
+            <div class="token-scatter" id="token-scatter" role="group" aria-label="Accuracy versus total token use" aria-describedby="token-note"></div>
+            <div class="token-legend" id="token-legend" aria-label="Browsing settings"></div>
+            <p class="token-detail" id="token-detail" aria-live="polite">Select a point to see exact values.</p>
+            <p class="token-note" id="token-note">Totals include research and grading. OWL combines workforce traces with separate grading calls.</p>
+          </div>
         </figure>
       </section>
 

@@ -35,7 +35,8 @@ function validateSiteData(data) {
     const rows = data.results?.[setting];
     if (!Array.isArray(rows) || !rows.length) throw new Error(`Missing ${setting} results.`);
     for (const row of rows) {
-      if (!row.model || !isCount(row.correct) || row.total !== dataset.questions || row.correct > row.total) {
+      if (!row.model || !isCount(row.correct) || row.total !== dataset.questions ||
+          row.correct > row.total || !Number.isFinite(row.total_tokens_m) || row.total_tokens_m <= 0) {
         throw new Error(`Invalid ${setting} result.`);
       }
     }
@@ -189,11 +190,13 @@ function renderDomains(data) {
 
 function renderAccuracy(data) {
   const chart = document.getElementById("accuracy-chart");
+  const head = makeElement("div", "accuracy-head");
   const axis = makeElement("div", "accuracy-axis");
   for (let tick = 0; tick <= 4; tick += 1) {
     axis.append(makeElement("span", "", `${tick * 25}%`));
   }
-  chart.append(axis);
+  head.append(axis, makeElement("span", "token-column-title", "Tokens (M)"));
+  chart.append(head);
 
   for (const [setting, label] of Object.entries(settingNames)) {
     const group = makeElement("div", `chart-group ${setting}`);
@@ -208,14 +211,98 @@ function renderAccuracy(data) {
       fill.style.setProperty("--fill", `${accuracy}%`);
       track.append(fill);
       const value = makeElement("span", "accuracy-value", `${accuracy.toFixed(2)}%`);
-      row.setAttribute("aria-label", `${label}, ${result.model}: ${accuracy.toFixed(2)} percent accuracy`);
-      row.append(model, track, value);
+      const tokens = makeElement("span", "token-value", result.total_tokens_m.toFixed(1));
+      row.setAttribute("aria-label", `${label}, ${result.model}: ${accuracy.toFixed(2)} percent accuracy, ${result.total_tokens_m.toFixed(1)} million total tokens`);
+      row.append(model, track, value, tokens);
       group.append(row);
       rows.push(row);
     }
     chart.append(group);
     rows.forEach((row) => observeReveal(row));
   }
+}
+
+function renderTokenScatter(data) {
+  const container = document.getElementById("token-scatter");
+  const legend = document.getElementById("token-legend");
+  const detail = document.getElementById("token-detail");
+  const defaultDetail = detail.textContent;
+  const results = Object.entries(settingNames).flatMap(([setting, label]) =>
+    data.results[setting].map((result) => ({
+      setting, label, ...result,
+      accuracy: result.correct / result.total * 100
+    }))
+  );
+  const yMaximum = Math.ceil(Math.max(...results.map((row) => row.accuracy)) / 10) * 10;
+  const smallest = Math.min(...results.map((row) => row.total_tokens_m));
+  const largest = Math.max(...results.map((row) => row.total_tokens_m));
+  const xMinimum = 10 ** (Math.floor(Math.log10(smallest)) - 0.15);
+  const xMaximum = 10 ** (Math.ceil(Math.log10(largest)) + 0.12);
+  const xPosition = (value) => (Math.log10(value) - Math.log10(xMinimum)) /
+    (Math.log10(xMaximum) - Math.log10(xMinimum)) * 100;
+
+  container.append(makeElement("p", "scatter-y-title", "Accuracy (%)"));
+  const area = makeElement("div", "scatter-area");
+  const yScale = makeElement("div", "scatter-y-scale");
+  const field = makeElement("div", "scatter-field");
+  const xScale = makeElement("div", "scatter-x-scale");
+  for (let tick = 0; tick <= 4; tick += 1) {
+    const position = `${(1 - tick / 4) * 100}%`;
+    const label = makeElement("span", "", `${Math.round(yMaximum * tick / 4)}%`);
+    label.style.top = position;
+    yScale.append(label);
+    const line = makeElement("span", "scatter-grid-y");
+    line.style.top = position;
+    field.append(line);
+  }
+  for (let power = Math.floor(Math.log10(xMinimum)); power <= Math.ceil(Math.log10(xMaximum)); power += 1) {
+    for (const factor of [1, 3]) {
+      const tick = factor * 10 ** power;
+      if (tick < xMinimum || tick > xMaximum) continue;
+      const position = `${xPosition(tick)}%`;
+      const label = makeElement("span", "", tick.toLocaleString("en-US"));
+      label.style.left = position;
+      xScale.append(label);
+      const line = makeElement("span", "scatter-grid-x");
+      line.style.left = position;
+      field.append(line);
+    }
+  }
+
+  const points = [];
+  const clearActive = () => {
+    points.forEach((point) => point.classList.remove("is-active"));
+    detail.textContent = defaultDetail;
+  };
+  for (const [index, result] of results.entries()) {
+    const point = makeElement("button", `scatter-point ${result.setting}`);
+    point.type = "button";
+    point.style.left = `${xPosition(result.total_tokens_m)}%`;
+    point.style.top = `${(1 - result.accuracy / yMaximum) * 100}%`;
+    point.style.setProperty("--delay", `${index * 65}ms`);
+    point.setAttribute("aria-label", `${result.label}, ${result.model}: ${result.accuracy.toFixed(2)} percent accuracy and ${result.total_tokens_m.toFixed(1)} million total tokens`);
+    const showActive = () => {
+      points.forEach((item) => item.classList.toggle("is-active", item === point));
+      detail.textContent = `${result.label} · ${result.model}: ${result.accuracy.toFixed(2)}% accuracy, ${result.total_tokens_m.toFixed(1)}M tokens`;
+    };
+    point.addEventListener("pointerenter", showActive);
+    point.addEventListener("focus", showActive);
+    point.addEventListener("click", showActive);
+    point.addEventListener("pointerleave", () => {
+      if (document.activeElement !== point) clearActive();
+    });
+    point.addEventListener("blur", clearActive);
+    field.append(point);
+    points.push(point);
+  }
+  area.append(yScale, field, xScale);
+  container.append(area, makeElement("p", "scatter-x-title", "Total tokens (millions; log scale)"));
+  for (const [setting, label] of Object.entries(settingNames)) {
+    const item = makeElement("span", "token-legend-item");
+    item.append(makeElement("span", `token-legend-dot ${setting}`), document.createTextNode(label));
+    legend.append(item);
+  }
+  observeReveal(field, 0.55);
 }
 
 async function loadSiteData() {
@@ -228,6 +315,7 @@ async function loadSiteData() {
   renderDomains(data);
   renderBars(data.dataset.modalities, "modality-chart");
   renderAccuracy(data);
+  renderTokenScatter(data);
 }
 
 const exampleState = {

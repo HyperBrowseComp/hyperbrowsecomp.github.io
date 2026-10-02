@@ -14,7 +14,7 @@ Open [http://localhost:8000](http://localhost:8000). Use an HTTP server because 
 
 ## Data provenance
 
-`data/site-data.json` contains only public aggregates. `scripts/build_public_data.py` produces the question and language counts from the local encrypted Parquet ID column and retained ID list; built-in/Exa scores come from final Inspect evaluation logs. It extracts domain and modality counts from the attached manuscript's distribution figure, and the OWL row from its main results table, checking the printed percentages against the counts. The script does not export questions, answers, canaries, keys, or traces.
+`data/site-data.json` contains only public aggregates. `scripts/build_public_data.py` produces the question and language counts from the local encrypted Parquet ID column and retained ID list; built-in/Exa scores come from final Inspect evaluation logs. It extracts domain and modality counts from the attached manuscript's distribution figure, and token totals and the OWL row from its main results table. The script checks printed percentages against counts and verifies that the evaluation scores match the table. It does not export questions, answers, canaries, keys, or traces.
 
 `data/examples.json` and `assets/examples/` preserve the example questions, answers, evidence steps, and screenshots from the original project website. Each evidence step also maps to exact phrases in the English and original-language questions for synchronized highlighting. The viewer uses these local files; it does not request the old site at runtime.
 
