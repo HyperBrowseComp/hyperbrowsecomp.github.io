@@ -33,9 +33,7 @@ Regeneration needs `pyarrow`, the local `libzstd` library, and `pdftotext`. Visi
 
 ## Before publishing
 
-- Replace the temporary author and affiliation text in `index.html`.
-- Replace the Paper, Code, and Dataset header placeholders with links to the public releases.
-- Replace the provisional BibTeX entry with the final citation.
+- Replace the Code header placeholder when the public repository is available.
 
 The local manuscript PDF is ignored by Git and is not part of the site commit.
 
