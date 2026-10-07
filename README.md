@@ -31,9 +31,7 @@ python3 scripts/build_public_data.py \
 
 Regeneration needs `pyarrow`, the local `libzstd` library, and `pdftotext`. Visitors and GitHub Pages need none of these. If the evaluation records or manuscript change, regenerate the JSON before publishing.
 
-## Before publishing
-
-- Replace the Code header placeholder when the public repository is available.
+## Deployment
 
 The local manuscript PDF is ignored by Git and is not part of the site commit.
 
